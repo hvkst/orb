@@ -12,32 +12,45 @@ function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   player = new Player();
   ow = width / 2 - 75;
-  obstacle1 = new Obstacle(0, 200, ow + 25, 200);
-  obstacle2 = new Obstacle(width, 200, width - ow - 25, 200);
+  obstacle1 = new Obstacle(0, 200, ow + 35, 200);
+  obstacle2 = new Obstacle(width, 200, width - ow - 35, 200);
 
-  obstacle3 = new Obstacle(0, 400, ow, 400);
-  obstacle4 = new Obstacle(width, 400, width - ow, 400);
+  obstacle3 = new Obstacle(0, 400, ow + 28, 400);
+  obstacle4 = new Obstacle(width, 400, width - ow - 28, 400);
 
-  particle1 = new Particle(width - 50, height - 50, 20);
-  particle2 = new Particle(0 + 50, height - 50, 20);
-  particle3 = new Particle(width - 50, height - 410, 20);
-  particle4 = new Particle(0 + 50, height - 410, 20);
+  growParticle1 = new GrowParticle(width - 100, 100, 30, 20);
+  growParticle2 = new GrowParticle(0 + 100, 100, 30, 20);
+
+  shrinkParticle1 = new ShrinkParticle(width - 100, 300, 20, 10);
+  shrinkParticle2 = new ShrinkParticle(0 + 100, 300, 20, 10);
+
+  shrinkParticle3 = new ShrinkParticle(width - 100, height - 410, 20, 10);
+  shrinkParticle4 = new ShrinkParticle(0 + 100, height - 410, 20, 10);
 }
 
 function draw() {
-  background(120);
+  background(80);
+  updatePlayer();
+  updateObstacleAndParticles();
+}
+
+function updateObstacleAndParticles() {
   obstacle1.update();
-  // line(0, 200, width - 75, 200);
   obstacle2.update();
   obstacle3.update();
   obstacle4.update();
-  particle1.update();
-  particle2.update();
-  particle3.update();
-  particle4.update();
+
+  growParticle1.update();
+  growParticle2.update();
+
+  shrinkParticle1.update();
+  shrinkParticle2.update();
+  shrinkParticle3.update();
+  shrinkParticle4.update();
+}
+
+function updatePlayer() {
   player.update();
   player.move();
   player.limitMovement();
-  // obstacle5.update();
-  // obstacle6.update();
 }

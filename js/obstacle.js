@@ -7,15 +7,16 @@ class Obstacle {
   }
 
   update() {
-    hit = collideLineCircle(this.x1, this.y1, this.x2, this.y2, player.x, player.y, player.d);
-    strokeWeight(10);
+    hit = collideLineCircle(this.x1, this.y1 + 10, this.x2, this.y2 + 10, player.x, player.y, player.d);
+    strokeWeight(20);
+    // stroke(200);
     line(this.x1, this.y1, this.x2, this.y2);
     strokeCap(SQUARE);
     // line(this.x1, this.y1 - 6, this.x2, this.y2 - 6);
     // line(this.x1, this.y1 - 12, this.x2, this.y2 - 12);
     // line(this.x1, this.y1 - 18, this.x2, this.y2 - 18);
-    if (hit) {
-      player.y += 20;
+    if (hit && player.y - player.d < this.y1) {
+      player.y += 5;
     }
   }
 
