@@ -27,8 +27,12 @@ class ShrinkParticle extends SpecialParticle {
       // how to make a particle disappear?
     }
 
-    if (player.grow) this.x += random(-1, 1);
-    if (!player.grow) this.y += random(-1, 1);
+    this.x += random(-1, 1);
+    this.y += random(-1, 1);
+    // this inside gameplay-function
+    if (player.y < height * 0.5) {
+      this.y += gameSpeed * 0.1;
+    }
   }
 }
 
@@ -52,6 +56,10 @@ class GrowParticle extends SpecialParticle {
 
     this.x += random(-1, 1);
     this.y += random(-1, 1);
+    // this inside gameplay-function
+    if (player.y < height * 0.5) {
+      this.y += gameSpeed * 0.1;
+    }
   }
 }
 
@@ -59,13 +67,12 @@ class GrowParticle extends SpecialParticle {
 
 class RandomParticle {
   constructor() {
-    let randomX = round(random(0, width));
-    let randomY = round(random(0, height));
-    let randomD = round(random(10, 20));
-    let vector = createVector(randomX, randomY);
+    let randomX = random(0, width);
+    let randomY = random(0, height);
+    let randomD = random(10, 20);
     this.collided = false;
-    this.x = vector.x;
-    this.y = vector.y;
+    this.x = randomX;
+    this.y = randomY;
     this.d = randomD;
   }
 
@@ -76,21 +83,21 @@ class RandomParticle {
 
     hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
     if (hit) {
-      this.collided = true; // A bit hacky, but particle is gone and shrinking only happens once ;D
-      console.log(this.collided);
+      this.collided = true;
+      score++;
     }
 
-    if (this.x < 0 - this.d / 2) {
-      this.x = width + this.d / 8;
+    if (this.x < 0 + this.d) {
+      this.x = 10;
     }
-    if (this.x > width + this.d / 2) {
-      this.x = 0 - this.d / 8;
+    if (this.x > width - this.d) {
+      this.x = width - 10;
     }
-    if (this.y < 0 + this.d / 2) {
-      this.y = 0 + this.d / 2;
+    if (this.y < 0 + this.d) {
+      this.y = height - 10;
     }
-    if (this.y > height - this.d / 2) {
-      this.y = height - this.d / 2;
+    if (this.y > height - this.d) {
+      this.y = 10;
     }
   }
 

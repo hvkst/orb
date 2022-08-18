@@ -4,12 +4,17 @@
 // Variables
 let colorChange = 120;
 let obstacle1; // Looks like I don´t have to do that???
-let ow; // needed to get length of right obstacle
+let mid; // needed to get length of right obstacle
 let hit = false;
 let backBgY = 0;
 let midBgY = 0;
-let gameSpeed = 2;
+let gameSpeed = 0;
 let randomParticles = [];
+let goodParticleArray = [];
+let obstacleArray = [];
+let score = 0;
+let gameStarted = false;
+// Need a gameplay-function her... if game started something.y += gamespeed
 
 //
 function setup() {
@@ -19,12 +24,17 @@ function setup() {
   bgImg2 = loadImage("images/two.png");
 
   player = new Player();
-  ow = width / 2 - 40; // need this to place obstacle on other side // x y w h
-  obstacle1 = new Obstacle(0, 200, ow, 20);
-  obstacle2 = new Obstacle(width - ow, 200, ow, 20);
+  finish = new Finish();
+  mid = width / 2; // need this to place obstacle on other side // x y w h
+  obstacle1 = new Obstacle(0, 200, mid - 40, 20);
+  obstacle2 = new Obstacle(width - mid + 40, 200, mid - 40, 20);
 
-  obstacle3 = new Obstacle(0, 400, ow - 10, 20);
-  obstacle4 = new Obstacle(width - ow + 10, 400, ow - 10, 20);
+  obstacle3 = new Obstacle(0, 400, mid - 50, 20);
+  obstacle4 = new Obstacle(width - mid + 50, 400, mid - 50, 20);
+  // Maze Testing // x y w h
+  obstacle5 = new Obstacle(mid - 100, 217, 20, 185);
+  obstacle6 = new Obstacle(mid + 80, 17, 20, 185);
+  obstacle7 = new Obstacle(width - mid + 40, 0, mid - 40, 20);
 
   growParticle1 = new GrowParticle(width - 100, 100, 30, 20);
   growParticle2 = new GrowParticle(0 + 100, 100, 30, 20);
@@ -35,12 +45,10 @@ function setup() {
   shrinkParticle3 = new ShrinkParticle(width - 100, height - 410, 20, 10);
   shrinkParticle4 = new ShrinkParticle(0 + 100, height - 410, 20, 10);
 
-  // testParticle1 = new RandomParticle();
-  // testParticle2 = new RandomParticle();
-
   for (let i = 0; i < 100; i++) {
     randomParticles[i] = new RandomParticle();
   }
+  console.log(randomParticles);
 }
 
 function draw() {
@@ -53,6 +61,11 @@ function draw() {
 }
 
 function updateObstacleAndParticles() {
+  // Maze Testing
+  obstacle5.update();
+  obstacle6.update();
+  obstacle7.update();
+
   obstacle1.update();
   obstacle2.update();
   obstacle3.update();
@@ -72,7 +85,7 @@ function updateObstacleAndParticles() {
     if (randomParticles[i].collided == true) {
       randomParticles.splice(i, 1);
     }
-    if (randomParticles.length < 10) randomParticles.push(new RandomParticle());
+    if (randomParticles.length < 1) randomParticles.push(new RandomParticle());
   }
 }
 
@@ -80,6 +93,7 @@ function updatePlayer() {
   player.update();
   player.move();
   player.limitMovement();
+  finish.update();
 }
 
 function drawBackground() {

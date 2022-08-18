@@ -20,6 +20,8 @@ class Player {
     textSize(40);
     textAlign(CENTER, CENTER);
     text(`${round(this.d)}`, this.x, this.y);
+    textSize(20);
+    text(`${score}`, this.x, this.y + 30);
 
     if (this.d > this.baseD + this.growRange) {
       this.grow = false;
@@ -59,6 +61,12 @@ class Player {
     if (keyIsDown(RIGHT_ARROW)) {
       this.x += this.v;
     }
+    // Not the bet place here, but:
+    if (this.y < height * 0.7 && this.y > height * 0.6) {
+      gameSpeed = 1;
+    } else if (this.y < height * 0.6) {
+      gameSpeed = 2;
+    } else gameSpeed = 0;
   }
 
   limitMovement() {
@@ -82,30 +90,91 @@ class Player {
   }
 }
 
-function growing(who) {
-  if (who.d > 130) {
-    who.grow = false;
-  }
-  if (who.d < 100) {
-    who.grow = true;
+// Maybe into gameplay.js
+class Finish {
+  constructor() {
+    this.d = 115;
+    this.x = width / 2;
+    this.y = -115;
+
+    this.grow = true;
+    this.growAmount = 0.2;
+    this.growRange = 5;
+    this.baseD = 115;
   }
 
-  if (who.grow == true) {
-    if (who.d > 127) {
-      who.d += who.growAmount / 2;
-    } else {
-      who.d += who.growAmount;
-      colorChange += 1;
+  update() {
+    strokeWeight(4);
+    fill(255, 0, 255, colorChange - 100);
+    circle(this.x, this.y, this.d);
+
+    if (this.d > this.baseD + this.growRange) {
+      this.grow = false;
     }
-  } else {
-    if (who.d < 103) {
-      who.d -= who.growAmount / 2;
+    if (this.d < this.baseD - this.growRange) {
+      this.grow = true;
+    }
+
+    if (this.grow == true) {
+      if (this.d > this.baseD + this.growRange - 3) {
+        this.d += this.growAmount / 2;
+      } else {
+        this.d += this.growAmount;
+      }
     } else {
-      who.d -= who.growAmount;
-      colorChange -= 1;
+      if (this.d < this.baseD - this.growRange + 3) {
+        this.d -= this.growAmount / 2;
+      } else {
+        this.d -= this.growAmount;
+      }
+    }
+    // this inside gameplay-function
+    if (player.y < height * 0.5) {
+      this.y += gameSpeed * 0.1;
+    }
+
+    hit = collideCircleCircle(this.x, this.y, this.d / 15, player.x, player.y, player.d / 15);
+    if (hit && this.d == player.d) {
+      noLoop();
+      textSize(40);
+      fill(255);
+      text("Level Ended", width / 3, height / 3);
+      text(` Your Score is ${score}`, width / 3, height / 3 + 40);
+    }
+    if (hit && this.d != player.d) {
+      textSize(30);
+      textAlign(CENTER, CENTER);
+      fill(255);
+      text("You have to be the same size as the finish", width / 2, 10);
     }
   }
 }
+
+// Grow function for later use?
+// function growing(who) {
+//   if (who.d > 130) {
+//     who.grow = false;
+//   }
+//   if (who.d < 100) {
+//     who.grow = true;
+//   }
+
+//   if (who.grow == true) {
+//     if (who.d > 127) {
+//       who.d += who.growAmount / 2;
+//     } else {
+//       who.d += who.growAmount;
+//       colorChange += 1;
+//     }
+//   } else {
+//     if (who.d < 103) {
+//       who.d -= who.growAmount / 2;
+//     } else {
+//       who.d -= who.growAmount;
+//       colorChange -= 1;
+//     }
+//   }
+// }
 
 //
 // if (this.d > this.d + thisgrowRange) {
