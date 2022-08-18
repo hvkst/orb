@@ -3,7 +3,7 @@ class Player {
     this.d = 115;
     this.x = width / 2;
     this.y = height - 100;
-    // this.speed = 3;
+
     this.grow = true;
     this.growAmount = 0.2;
     this.v = 5; // velocity
@@ -13,7 +13,8 @@ class Player {
 
   update() {
     strokeWeight(4);
-    fill(255, colorChange, 50);
+    fill(colorChange, colorChange, colorChange);
+    // fill(255, colorChange, 50);
     circle(this.x, this.y, this.d);
     fill(0);
     textSize(40);
@@ -32,14 +33,14 @@ class Player {
         this.d += this.growAmount / 2;
       } else {
         this.d += this.growAmount;
-        colorChange += 1;
+        colorChange += 2;
       }
     } else {
       if (this.d < this.baseD - this.growRange + 3) {
         this.d -= this.growAmount / 2;
       } else {
         this.d -= this.growAmount;
-        colorChange -= 1;
+        colorChange -= 2;
       }
     }
   }

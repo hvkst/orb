@@ -1,5 +1,10 @@
 body {
   margin: 0;
+  margin-top: 25px;
   padding: 0;
   overflow: hidden;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
