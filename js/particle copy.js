@@ -7,15 +7,11 @@ class SpecialParticle {
     this.morphAmmount = morphAmmount;
     this.randomN = round(random(1, 11)) / 10;
     this.collided = false;
-    // this.color = `0, ${colorChange + 70}, 0`;
-    this.r = 0;
-    this.g = 0;
-    this.b = 0;
   }
 
   update() {
     strokeWeight(2);
-    fill(this.r, this.g, this.b);
+    fill(0, colorChange + 70, 0);
     circle(this.x, this.y, this.d);
 
     let hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
@@ -26,10 +22,10 @@ class SpecialParticle {
       player.d -= this.morphAmmount;
     }
 
-    this.x += random(-0.5, 0.5);
-    this.y += random(-0.5, 0.5);
+    this.x += random(-1, 1);
+    this.y += random(-1, 1);
     // this inside gameplay-function
-    if (gameStarted) {
+    if (player.y < height * 0.9) {
       this.y += gameSpeed * 0.2;
     }
   }
@@ -37,23 +33,44 @@ class SpecialParticle {
 
 class ShrinkParticle extends SpecialParticle {
   constructor(x, y, d, morphAmmount) {
-    super(x, y, d, morphAmmount);
+    super(x, y, d, morphamount);
     this.x = x;
     this.y = y;
     this.d = d;
     this.morphAmmount = morphAmmount;
-    this.g = colorChange;
+  }
+  update() {
+    super.update();
   }
 }
 
 class GrowParticle extends SpecialParticle {
   constructor(x, y, d, morphAmmount) {
-    super(x, y, d, morphAmmount);
-    this.x = x;
-    this.y = y;
-    this.d = d;
+    super(x, y, d);
     this.morphAmmount = -morphAmmount;
-    this.r = colorChange + 70;
+    this.collided = false;
+  }
+  update() {
+    strokeWeight(2);
+    fill(colorChange + 70, 0, 0);
+    circle(this.x, this.y, this.d);
+
+    let hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
+    if (hit) {
+      maximize.play();
+      this.collided = true;
+      player.baseD -= this.morphAmmount;
+      player.d -= this.morphAmmount;
+      // this.y = -1000; // A bit hacky, but particle is gone and shrinking only happens once ;D
+      // how to make a particle disappear?
+    }
+
+    this.x += random(-1, 1);
+    this.y += random(-1, 1);
+    // this inside gameplay-function
+    if (player.y < height * 0.9) {
+      this.y += gameSpeed * 0.2;
+    }
   }
 }
 
@@ -92,7 +109,7 @@ class RandomParticle {
   }
 
   move() {
-    if (gameStarted) {
+    if (player.y < height * 0.9) {
       this.y += gameSpeed * 0.2;
     }
     if (player.grow) {

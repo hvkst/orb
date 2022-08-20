@@ -2,7 +2,7 @@ class Player {
   constructor() {
     this.d = 115;
     this.x = width / 2;
-    this.y = height * 0.95;
+    this.y = height - 25;
 
     this.grow = true;
     this.growAmount = 0.2;
@@ -13,15 +13,17 @@ class Player {
 
   update() {
     strokeWeight(4);
-    fill(colorChange, colorChange, colorChange);
-    // fill(255, colorChange, 50);
+    // fill(colorChange, colorChange, colorChange);
+    fill(255, colorChange, 50);
     circle(this.x, this.y, this.d);
     fill(0);
     textSize(40);
-    textAlign(CENTER, CENTER);
+    textAlign(CENTER);
     text(`${round(this.d)}`, this.x, this.y);
     textSize(20);
-    text(`${score}`, this.x, this.y + 30);
+    // text(`x: ${round(this.x)}`, this.x, this.y + 20);
+    // text(`y: ${round(this.y)}`, this.x, this.y + 40);
+    text(`${this.baseD}`, this.x, this.y + 40);
 
     if (this.d > this.baseD + this.growRange) {
       this.grow = false;
@@ -61,12 +63,6 @@ class Player {
     if (keyIsDown(RIGHT_ARROW)) {
       this.x += this.v;
     }
-    // Not the bet place here, but:
-    if (this.y < height * 0.9 && this.y > height * 0.8) {
-      gameSpeed = 1;
-    } else if (this.y < height * 0.8) {
-      gameSpeed = 2;
-    } else gameSpeed = 0;
   }
 
   limitMovement() {
@@ -79,9 +75,12 @@ class Player {
     if (this.y < 0 + this.d / 2) {
       this.y = 0 + this.d / 2;
     }
-    if (this.y > height - this.d / 2) {
-      this.y = height - this.d / 2;
+    if (this.y > height + this.d / 4) {
+      this.y = height + this.d / 4;
     }
+    if (this.y > height - this.d / 4 && colorChange > 0) {
+      colorChange -= 5;
+    } else if (colorChange < 100) colorChange += 5;
     // This has to go for now, maybe a generel function linked to obstacles for that?
     // // Tried to implement some kind of guidance here, kinda working
     // if (this.y > 180 && this.y < 260 && this.x > width / 2 - 10 && this.x < width / 2 + 10) this.x = width / 2;
@@ -89,64 +88,16 @@ class Player {
   }
 }
 
-// Maybe into gameplay.js
-// Maybe some if player is in range and of right baseD suck in...
-// class Finish {
-//   constructor() {
-//     this.d = 115;
-//     this.x = width / 2;
-//     this.y = -115;
-//     // this.y = 555;
+function gameStatus() {
+  if (player.y < height - 65) {
+    gameStarted = true;
+  }
+  if (gameStarted) {
+    gameSpeed = 3;
+  }
 
-//     this.grow = true;
-//     this.growAmount = 0.2;
-//     this.growRange = 5;
-//     this.baseD = 115;
-//   }
-
-//   update() {
-//     strokeWeight(4);
-//     fill(255, 0, 255, colorChange - 100);
-//     circle(this.x, this.y, this.d);
-
-//     if (this.d > this.baseD + this.growRange) {
-//       this.grow = false;
-//     }
-//     if (this.d < this.baseD - this.growRange) {
-//       this.grow = true;
-//     }
-
-//     if (this.grow == true) {
-//       if (this.d > this.baseD + this.growRange - 3) {
-//         this.d += this.growAmount / 2;
-//       } else {
-//         this.d += this.growAmount;
-//       }
-//     } else {
-//       if (this.d < this.baseD - this.growRange + 3) {
-//         this.d -= this.growAmount / 2;
-//       } else {
-//         this.d -= this.growAmount;
-//       }
-//     }
-//     // this inside gameplay-function
-//     if (player.y < height * 0.8) {
-//       this.y += gameSpeed * 0.1;
-//     }
-
-//     hit = collideCircleCircle(this.x, this.y, this.d / 3, player.x, player.y, player.d / 3);
-//     if (hit && this.baseD == player.baseD) {
-//       noLoop();
-//       textSize(40);
-//       fill(255);
-//       text("Level Ended", width / 3, height / 3);
-//       text(` Your Score is ${score}`, width / 3, height / 3 + 40);
-//     }
-//     if (hit && this.d != player.d) {
-//       textSize(30);
-//       textAlign(CENTER, CENTER);
-//       fill(255);
-//       text("You have to be the same size as the finish", width / 2, 10);
-//     }
-//   }
-// }
+  if (gameOver) {
+    gameover.play();
+    noLoop();
+  }
+}

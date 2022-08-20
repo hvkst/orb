@@ -10,6 +10,7 @@ class Obstacle {
     // Some kind of Loop here to detect x,y,d from all particles?
     let hit = collideRectCircle(this.x, this.y, this.w, this.h, player.x, player.y, player.d);
     fill(hit ? 255 : 50);
+    fill(40, 80, 80);
     rect(this.x, this.y, this.w, this.h);
     // Working collision detection
     // Split in two parts for debugging and better readability
@@ -24,29 +25,30 @@ class Obstacle {
     if (hit && fromRight) player.x += 6;
 
     // this inside gameplay-function
-    if (player.y < height * 0.9) {
+    if (gameStarted) {
       this.y += gameSpeed * 0.2;
     }
+    if (hit && fromBelow && player.y > height + 1) gameOver = true;
   }
 }
 
 class LevelFinish extends Obstacle {
-  constructor(x, y, w, h) {
+  constructor(x, y, w, h, t) {
     super(x, y, w, h);
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
+    this.trigger = t;
   }
 
   update() {
     super.update();
     let hit = collideRectCircle(this.x, this.y, this.w, this.h, player.x, player.y, player.d);
-    if (hit && player.baseD == 115) {
+    if (hit && player.baseD == this.trigger) {
       this.collided = true;
       succes.play();
+      levelCounter++;
     }
   }
-
-  // // Some kind of Loop here to detect x,y,d from all particles?
 }
