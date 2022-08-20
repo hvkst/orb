@@ -82,11 +82,10 @@ class Player {
     if (this.y > height - this.d / 2) {
       this.y = height - this.d / 2;
     }
-    // Tried to implement some kind of guidance here, kinda working
-    if (this.y > 180 && this.y < 260 && this.x > width / 2 - 10 && this.x < width / 2 + 10) this.x = width / 2;
-    // if (this.y > 160 && this.y < 240 && this.x < width / 2 + 5) this.x = width / 2;
-    if (this.y > 380 && this.y < 460 && this.x > width / 2 - 10 && this.x < width / 2 + 10) this.x = width / 2;
-    // if (this.y > 360 && this.y < 440 && this.x < width / 2 + 5) this.x = width / 2;
+    // This has to go for now, maybe a generel function linked to obstacles for that?
+    // // Tried to implement some kind of guidance here, kinda working
+    // if (this.y > 180 && this.y < 260 && this.x > width / 2 - 10 && this.x < width / 2 + 10) this.x = width / 2;
+    // if (this.y > 380 && this.y < 460 && this.x > width / 2 - 10 && this.x < width / 2 + 10) this.x = width / 2;
   }
 }
 

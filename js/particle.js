@@ -21,6 +21,7 @@ class ShrinkParticle extends SpecialParticle {
 
     hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
     if (hit) {
+      minimize.play();
       player.baseD -= this.morphAmmount;
       player.d -= this.morphAmmount;
       this.y = -1000; // A bit hacky, but particle is gone and shrinking only happens once ;D
@@ -48,6 +49,7 @@ class GrowParticle extends SpecialParticle {
 
     hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
     if (hit) {
+      maximize.play();
       player.baseD -= this.morphAmmount;
       player.d -= this.morphAmmount;
       this.y = -1000; // A bit hacky, but particle is gone and shrinking only happens once ;D
@@ -78,11 +80,12 @@ class RandomParticle {
 
   update() {
     strokeWeight(2);
-    fill(colorChange, colorChange, colorChange);
+    fill(255, 0, 255, colorChange / 6);
     circle(this.x, this.y, this.d);
 
     hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
     if (hit) {
+      slime.play();
       this.collided = true;
       score++;
     }
@@ -102,7 +105,14 @@ class RandomParticle {
   }
 
   move() {
-    this.x += random(-1, 1);
-    this.y += random(-1, 1);
+    if (player.grow) {
+      this.x += random(-0.5, 0.5);
+      this.y += random(-0.5, 0);
+    }
+
+    if (!player.grow) {
+      this.x += random(-0.5, 0.5);
+      this.y += random(0, 0.5);
+    }
   }
 }

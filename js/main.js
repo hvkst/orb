@@ -16,6 +16,17 @@ let score = 0;
 let gameStarted = false;
 // Need a gameplay-function her... if game started something.y += gamespeed
 
+// sounds
+let minimize;
+let maximize;
+let slime;
+
+function preload() {
+  minimize = loadSound("./sounds/minimize.wav");
+  maximize = loadSound("./sounds/maximize.wav");
+  slime = loadSound("./sounds/slime.wav");
+}
+
 //
 function setup() {
   createCanvas(750, 900);
@@ -29,12 +40,14 @@ function setup() {
   obstacle1 = new Obstacle(0, 200, mid - 40, 20);
   obstacle2 = new Obstacle(width - mid + 40, 200, mid - 40, 20);
 
-  obstacle3 = new Obstacle(0, 400, mid - 50, 20);
-  obstacle4 = new Obstacle(width - mid + 50, 400, mid - 50, 20);
+  obstacle3 = new Obstacle(0, 400, mid - 52, 20);
+  obstacle4 = new Obstacle(width - mid + 52, 400, mid - 52, 20);
   // Maze Testing // x y w h
   obstacle5 = new Obstacle(mid - 100, 217, 20, 185);
   obstacle6 = new Obstacle(mid + 80, 17, 20, 185);
   obstacle7 = new Obstacle(width - mid + 40, 0, mid - 40, 20);
+  // collision detection test
+  obstacle8 = new Obstacle(mid + 80, 450, 20, 185);
 
   growParticle1 = new GrowParticle(width - 100, 100, 30, 20);
   growParticle2 = new GrowParticle(0 + 100, 100, 30, 20);
@@ -61,10 +74,12 @@ function draw() {
 }
 
 function updateObstacleAndParticles() {
+  updateRandomParticles();
   // Maze Testing
   obstacle5.update();
   obstacle6.update();
   obstacle7.update();
+  obstacle8.update();
 
   obstacle1.update();
   obstacle2.update();
@@ -78,15 +93,6 @@ function updateObstacleAndParticles() {
   shrinkParticle2.update();
   shrinkParticle3.update();
   shrinkParticle4.update();
-
-  for (let i = 0; i < randomParticles.length; i++) {
-    randomParticles[i].update();
-    randomParticles[i].move();
-    if (randomParticles[i].collided == true) {
-      randomParticles.splice(i, 1);
-    }
-    if (randomParticles.length < 1) randomParticles.push(new RandomParticle());
-  }
 }
 
 function updatePlayer() {
@@ -120,3 +126,14 @@ function drawBackground() {
 //     elem.collided == false;
 //   });
 // }
+
+function updateRandomParticles() {
+  for (let i = 0; i < randomParticles.length; i++) {
+    randomParticles[i].update();
+    randomParticles[i].move();
+    if (randomParticles[i].collided == true) {
+      randomParticles.splice(i, 1);
+    }
+    if (randomParticles.length < 1) randomParticles.push(new RandomParticle());
+  }
+}
