@@ -1,11 +1,8 @@
-// nothing here yet
-// Trying to move a ball trough a hole ;D
-
 // Variables
 let colorChange = 120;
 let obstacle1; // Looks like I don´t have to do that???
 let mid; // needed to get length of right obstacle
-let hit = false;
+
 let backBgY = 0;
 let midBgY = 0;
 let gameSpeed = 0;
@@ -17,51 +14,28 @@ let gameStarted = false;
 // Need a gameplay-function her... if game started something.y += gamespeed
 
 // sounds
-let minimize;
-let maximize;
-let slime;
+let minimize, maximize, slime, succes;
+let thingsArray;
 
 function preload() {
   minimize = loadSound("./sounds/minimize.wav");
   maximize = loadSound("./sounds/maximize.wav");
   slime = loadSound("./sounds/slime.wav");
+  succes = loadSound("./sounds/succes.wav");
 }
 
-//
 function setup() {
   createCanvas(750, 900);
   // Background
   bgImg1 = loadImage("images/three.png");
   bgImg2 = loadImage("images/two.png");
-
   player = new Player();
-  finish = new Finish();
-  mid = width / 2; // need this to place obstacle on other side // x y w h
-  obstacle1 = new Obstacle(0, 200, mid - 40, 20);
-  obstacle2 = new Obstacle(width - mid + 40, 200, mid - 40, 20);
-
-  obstacle3 = new Obstacle(0, 400, mid - 52, 20);
-  obstacle4 = new Obstacle(width - mid + 52, 400, mid - 52, 20);
-  // Maze Testing // x y w h
-  obstacle5 = new Obstacle(mid - 100, 217, 20, 185);
-  obstacle6 = new Obstacle(mid + 80, 17, 20, 185);
-  obstacle7 = new Obstacle(width - mid + 40, 0, mid - 40, 20);
-  // collision detection test
-  obstacle8 = new Obstacle(mid + 80, 450, 20, 185);
-
-  growParticle1 = new GrowParticle(width - 100, 100, 30, 20);
-  growParticle2 = new GrowParticle(0 + 100, 100, 30, 20);
-
-  shrinkParticle1 = new ShrinkParticle(width - 100, 300, 20, 10);
-  shrinkParticle2 = new ShrinkParticle(0 + 100, 300, 20, 10);
-
-  shrinkParticle3 = new ShrinkParticle(width - 100, height - 410, 20, 10);
-  shrinkParticle4 = new ShrinkParticle(0 + 100, height - 410, 20, 10);
-
+  createThings();
+  spawnRandomParticles();
+  // SpawnParticles here
   for (let i = 0; i < 100; i++) {
     randomParticles[i] = new RandomParticle();
   }
-  console.log(randomParticles);
 }
 
 function draw() {
@@ -69,37 +43,24 @@ function draw() {
   drawBackground();
   updatePlayer();
   updateObstacleAndParticles();
-
-  // console.log(randomParticles);
+  text(`Random particles existing: ${randomParticles.length}`, 200, 10);
 }
 
 function updateObstacleAndParticles() {
   updateRandomParticles();
-  // Maze Testing
-  obstacle5.update();
-  obstacle6.update();
-  obstacle7.update();
-  obstacle8.update();
+  updateObstacles();
+}
 
-  obstacle1.update();
-  obstacle2.update();
-  obstacle3.update();
-  obstacle4.update();
-
-  growParticle1.update();
-  growParticle2.update();
-
-  shrinkParticle1.update();
-  shrinkParticle2.update();
-  shrinkParticle3.update();
-  shrinkParticle4.update();
+function updateObstacles() {
+  thingsArray.forEach((elem) => {
+    elem.update();
+  });
 }
 
 function updatePlayer() {
   player.update();
   player.move();
   player.limitMovement();
-  finish.update();
 }
 
 function drawBackground() {
@@ -120,20 +81,51 @@ function drawBackground() {
   }
 }
 
-// function cleanRandomParticlesArray() {
-//   randomParticles = randomParticles.filter((elem) => {
-//     console.log(elem.collided);
-//     elem.collided == false;
-//   });
-// }
-
 function updateRandomParticles() {
-  for (let i = 0; i < randomParticles.length; i++) {
-    randomParticles[i].update();
-    randomParticles[i].move();
-    if (randomParticles[i].collided == true) {
-      randomParticles.splice(i, 1);
+  randomParticles = randomParticles.filter((particle) => {
+    particle.update();
+    particle.move();
+    return !particle.collided;
+  });
+
+  thingsArray = thingsArray.filter((particle) => {
+    return !particle.collided;
+  });
+
+  if (randomParticles.length < 5) {
+    for (let i = 0; i < 10; i++) {
+      randomParticles.push(new RandomParticle());
     }
-    if (randomParticles.length < 1) randomParticles.push(new RandomParticle());
+  }
+}
+
+function createThings() {
+  thingsArray = [
+    new Obstacle(0, 200, width / 2 - 40, 20),
+    new Obstacle(width - width / 2 + 40, 200, width / 2 - 40, 20),
+
+    new Obstacle(0, 400, width / 2 - 52, 20),
+    new Obstacle(width - width / 2 + 52, 400, width / 2 - 52, 20),
+    // Maze Testing // x y w h
+    new Obstacle(width / 2 - 100, 217, 20, 185),
+    new Obstacle(width / 2 + 80, 17, 20, 185),
+    new Obstacle(width - width / 2 + 40, 0, width / 2 - 40, 20),
+    // LevelEnd
+    new LevelFinish(-20, -100, width + 20, 20),
+
+    new GrowParticle(width - 100, 100, 30, 20),
+    new GrowParticle(0 + 100, 100, 30, 20),
+
+    new ShrinkParticle(width - 100, 300, 20, 10),
+    new ShrinkParticle(0 + 100, 300, 20, 10),
+
+    new ShrinkParticle(width - 100, height - 410, 20, 10),
+    new ShrinkParticle(0 + 100, height - 410, 20, 10),
+  ];
+}
+
+function spawnRandomParticles() {
+  for (let i = 0; i < 100; i++) {
+    randomParticles[i] = new RandomParticle();
   }
 }

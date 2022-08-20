@@ -1,17 +1,25 @@
 ## Todo
 
-- draw and implement background
-- collision detection (from up to down??)
-- what other obstacles
+- Implement collision detection for ALL particles ?!
 
-  - a maze using vertical infinite moving?
-
-- How to make the guidance general?
+- LET hit
 
 - Implement Array for Obstacles and "good" particles
 
-- Implement collision detection for ALL particles ?!
+- Implement gamePlay-Function wit time etc
+
+- what other obstacles
+
+- How to make the guidance general? Do I need that
+
+- StartScreen EndScreen
 
 ## Doing
 
 ## Done
+
+- draw and implement background
+- a maze using vertical infinite moving?
+- collision detection (from up to down??)
+- adding sounds
+- Fix collision detection

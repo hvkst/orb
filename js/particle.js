@@ -13,26 +13,28 @@ class ShrinkParticle extends SpecialParticle {
   constructor(x, y, d, morphAmmount) {
     super(x, y, d);
     this.morphAmmount = morphAmmount;
+    this.collided = false;
   }
   update() {
     strokeWeight(2);
     fill(0, colorChange + 70, 0);
     circle(this.x, this.y, this.d);
 
-    hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
+    let hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
     if (hit) {
       minimize.play();
+      this.collided = true;
       player.baseD -= this.morphAmmount;
       player.d -= this.morphAmmount;
-      this.y = -1000; // A bit hacky, but particle is gone and shrinking only happens once ;D
+      // this.y = -1000; // A bit hacky, but particle is gone and shrinking only happens once ;D
       // how to make a particle disappear?
     }
 
     this.x += random(-1, 1);
     this.y += random(-1, 1);
     // this inside gameplay-function
-    if (player.y < height * 0.5) {
-      this.y += gameSpeed * 0.1;
+    if (player.y < height * 0.9) {
+      this.y += gameSpeed * 0.2;
     }
   }
 }
@@ -41,26 +43,28 @@ class GrowParticle extends SpecialParticle {
   constructor(x, y, d, morphAmmount) {
     super(x, y, d);
     this.morphAmmount = -morphAmmount;
+    this.collided = false;
   }
   update() {
     strokeWeight(2);
     fill(colorChange + 70, 0, 0);
     circle(this.x, this.y, this.d);
 
-    hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
+    let hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
     if (hit) {
       maximize.play();
+      this.collided = true;
       player.baseD -= this.morphAmmount;
       player.d -= this.morphAmmount;
-      this.y = -1000; // A bit hacky, but particle is gone and shrinking only happens once ;D
+      // this.y = -1000; // A bit hacky, but particle is gone and shrinking only happens once ;D
       // how to make a particle disappear?
     }
 
     this.x += random(-1, 1);
     this.y += random(-1, 1);
     // this inside gameplay-function
-    if (player.y < height * 0.5) {
-      this.y += gameSpeed * 0.1;
+    if (player.y < height * 0.9) {
+      this.y += gameSpeed * 0.2;
     }
   }
 }
@@ -83,7 +87,7 @@ class RandomParticle {
     fill(255, 0, 255, colorChange / 6);
     circle(this.x, this.y, this.d);
 
-    hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
+    let hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
     if (hit) {
       slime.play();
       this.collided = true;
@@ -96,15 +100,13 @@ class RandomParticle {
     if (this.x > width - this.d) {
       this.x = width - 10;
     }
-    if (this.y < 0 + this.d) {
-      this.y = height - 10;
-    }
-    if (this.y > height - this.d) {
-      this.y = 10;
-    }
+    if (this.y > height + 20) this.collided = true;
   }
 
   move() {
+    if (player.y < height * 0.9) {
+      this.y += gameSpeed * 0.2;
+    }
     if (player.grow) {
       this.x += random(-0.5, 0.5);
       this.y += random(-0.5, 0);
