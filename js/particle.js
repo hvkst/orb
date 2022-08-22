@@ -1,10 +1,10 @@
 class SpecialParticle {
-  constructor(x, y, d, morphAmmount) {
-    // super(x, y, d, morphamount);
+  constructor(x, y, d, morphAmmount, sound) {
     this.x = x;
     this.y = y;
     this.d = d;
     this.morphAmmount = morphAmmount;
+    this.sound = sound;
     this.randomN = round(random(1, 11)) / 10;
     this.collided = false;
     // this.color = `0, ${colorChange + 70}, 0`;
@@ -20,14 +20,22 @@ class SpecialParticle {
 
     let hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
     if (hit) {
-      minimize.play();
+      this.sound.play();
       this.collided = true;
       player.baseD -= this.morphAmmount;
       player.d -= this.morphAmmount;
     }
 
-    this.x += random(-0.5, 0.5);
-    this.y += random(-0.5, 0.5);
+    let distance = dist(this.x, this.y, player.x, player.y);
+
+    // fill(0);
+    // textSize(15);
+    // textAlign(CENTER);
+    // text(`${round(distance)}`, this.x, this.y);
+    if (distance < 300) {
+      this.x += random(-1, 1);
+      this.y += random(-1, 1);
+    }
     // this inside gameplay-function
     if (gameStarted) {
       this.y += gameSpeed * 0.2;
@@ -36,24 +44,26 @@ class SpecialParticle {
 }
 
 class ShrinkParticle extends SpecialParticle {
-  constructor(x, y, d, morphAmmount) {
+  constructor(x, y, d, morphAmmount, sound) {
     super(x, y, d, morphAmmount);
     this.x = x;
     this.y = y;
     this.d = d;
     this.morphAmmount = morphAmmount;
-    this.g = colorChange;
+    this.g = 200;
+    this.sound = minimize;
   }
 }
 
 class GrowParticle extends SpecialParticle {
-  constructor(x, y, d, morphAmmount) {
-    super(x, y, d, morphAmmount);
+  constructor(x, y, d, morphAmmount, sound) {
+    super(x, y, d, morphAmmount, sound);
     this.x = x;
     this.y = y;
     this.d = d;
     this.morphAmmount = -morphAmmount;
-    this.r = colorChange + 70;
+    this.r = 200;
+    this.sound = maximize;
   }
 }
 

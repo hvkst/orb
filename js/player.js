@@ -47,6 +47,11 @@ class Player {
         colorChange -= 2;
       }
     }
+
+    if (this.baseD < 0) {
+      colorChange = 0;
+      gameOver = true;
+    }
   }
 
   move() {
@@ -78,7 +83,7 @@ class Player {
     if (this.y > height + this.d / 4) {
       this.y = height + this.d / 4;
     }
-    if (this.y > height - this.d / 4 && colorChange > 0) {
+    if (this.y > height - this.d / 10 && colorChange > 0) {
       colorChange -= 5;
     } else if (colorChange < 100) colorChange += 5;
     // This has to go for now, maybe a generel function linked to obstacles for that?
