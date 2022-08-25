@@ -14,7 +14,7 @@ class SpecialParticle {
   }
 
   update() {
-    strokeWeight(2);
+    strokeWeight(1);
     fill(this.r, this.g, this.b);
     circle(this.x, this.y, this.d);
 
@@ -81,8 +81,8 @@ class RandomParticle {
   }
 
   update() {
-    strokeWeight(2);
-    fill(255, 0, 255, colorChange / 6);
+    strokeWeight(1);
+    fill(200, 200, 0, colorChange / 6);
     circle(this.x, this.y, this.d);
 
     let hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);

@@ -12,18 +12,19 @@ class Player {
   }
 
   update() {
-    strokeWeight(4);
+    strokeWeight(2);
     // fill(colorChange, colorChange, colorChange);
     fill(255, colorChange, 50);
     circle(this.x, this.y, this.d);
-    fill(0);
-    textSize(40);
-    textAlign(CENTER);
-    text(`${round(this.d)}`, this.x, this.y);
-    textSize(20);
-    // text(`x: ${round(this.x)}`, this.x, this.y + 20);
-    // text(`y: ${round(this.y)}`, this.x, this.y + 40);
-    text(`${this.baseD}`, this.x, this.y + 40);
+    // //debugging
+    // fill(0);
+    // textSize(40);
+    // textAlign(CENTER);
+    // text(`${round(this.d)}`, this.x, this.y);
+    // textSize(20);
+    // // text(`x: ${round(this.x)}`, this.x, this.y + 20);
+    // // text(`y: ${round(this.y)}`, this.x, this.y + 40);
+    // text(`${this.baseD}`, this.x, this.y + 40);
 
     if (this.d > this.baseD + this.growRange) {
       this.grow = false;
@@ -97,12 +98,187 @@ function gameStatus() {
   if (player.y < height - 65) {
     gameStarted = true;
   }
+
   if (gameStarted) {
-    gameSpeed = 3;
+    if (levelCounter == 0) gameSpeed = 1.5;
+    else gameSpeed = 2.5;
   }
 
   if (gameOver) {
+    black = 0;
+    white = 255;
     gameover.play();
-    noLoop();
+    bgmusic.stop();
   }
+}
+
+function startScreen() {
+  push();
+  textFont(font);
+  background(0);
+  fill(white);
+  circle(width / 2, height / 2, circleD);
+
+  fill(255);
+
+  textAlign(CENTER);
+  // text(`${mouseX},${mouseY}`, width / 2, 100);
+  if (startScreenCounter > 10) {
+    textSize(75);
+    fill(black, alphaCount * 2);
+
+    textAlign(CENTER);
+    text("orb", width / 2, height / 2 + 25);
+  }
+
+  if (startScreenCounter > 50) {
+    textSize(40);
+    fill(white);
+    textAlign(CENTER);
+    text("Press 'orb' to play", width / 2, height / 2 + 300);
+  }
+  pop();
+  if (circleD > 200) {
+    grow = false;
+  }
+  if (circleD < 181) {
+    grow = true;
+  }
+
+  if (grow == true) {
+    if (circleD > 197) {
+      circleD += growAmount / 4;
+      startScreenCounter++;
+    } else if (circleD < 180) {
+      circleD += growAmount;
+    } else {
+      circleD += growAmount / 2;
+      if (startScreenCounter > 0) alphaCount += 2;
+    }
+  } else {
+    if (circleD < 183) {
+      circleD -= growAmount / 4;
+      // alphaCount--;
+    } else {
+      circleD -= growAmount / 3;
+    }
+  }
+}
+
+function gameOverScreen() {
+  push();
+  textFont(font);
+  background(255);
+  fill(black);
+  noStroke();
+  circle(width / 2, height / 2, gameOverCircleD);
+
+  if (gameOverCircleD > 200) {
+    gameOverCircleD -= 10;
+  }
+
+  if (gameOverCircleD < 201) {
+    textSize(40);
+    fill(white);
+    textAlign(CENTER);
+    fill(white, alphaCount + 255);
+    text("Game", width / 2, height / 2 - 25);
+    text("Over", width / 2, height / 2 + 15);
+
+    if (alphaCount < -800) {
+      textSize(75);
+      fill(white);
+      text("orb", width / 2, height / 2 - 15);
+      if (toggle) {
+        infobop.play();
+        toggle = false;
+      }
+    }
+
+    if (alphaCount < -1600) {
+      textSize(40);
+      fill(black);
+      text("Press 'orb' to play again", width / 2, height / 2 + 300);
+    }
+  }
+  pop();
+  if (gameOverCircleD > 199) {
+    grow = false;
+  }
+  if (gameOverCircleD < 181) {
+    grow = true;
+  }
+
+  if (grow == true) {
+    if (gameOverCircleD > 197) {
+      gameOverCircleD += growAmount / 4;
+      startScreenCounter++;
+    } else {
+      gameOverCircleD += growAmount / 2;
+      if (startScreenCounter > 0) alphaCount -= 25;
+    }
+  } else {
+    if (gameOverCircleD < 183) {
+      gameOverCircleD -= growAmount / 4;
+    } else {
+      gameOverCircleD -= growAmount / 3;
+    }
+  }
+}
+
+function mousePressed() {
+  if (startScreenShow && mouseX > width / 2 - 100 && mouseX < width / 2 + 100 && mouseY > height / 2 - 100 && mouseY < height / 2 + 100) {
+    black = 255;
+    white = 0;
+    infobop.play();
+    setTimeout(fromStartToGame, 2000);
+  }
+  if (gameOver && mouseX > width / 2 - 100 && mouseX < width / 2 + 100 && mouseY > height / 2 - 100 && mouseY < height / 2 + 100) {
+    black = 255;
+    white = 0;
+    infobop.play();
+    setTimeout(fromGameOverToGame, 2000);
+  }
+}
+
+function fromStartToGame() {
+  startScreenShow = false;
+  bgmusic.play();
+}
+
+function fromGameOverToGame() {
+  bgmusic.play();
+  resetSketch(false);
+}
+
+function resetSketch(startScreenPlay) {
+  // Reset variables
+  white = 255;
+  black = 0;
+  score = 0;
+  gameStarted = false;
+  levelCounter = 0;
+
+  gameOver = false;
+
+  toggle = true;
+
+  circleD = 0;
+  grow = true;
+  growAmount = 1;
+  startScreenCounter = 0;
+  alphaCount = 0;
+
+  startScreenShow = startScreenPlay; //debuggen startscreen already declared... where?
+  // ###
+  // GameOverScreen
+  gameOverCircleD = 2000;
+
+  // Background
+  bgImg1 = loadImage("images/three.png");
+  bgImg2 = loadImage("images/two.png");
+  player = new Player();
+  // createThings();
+  spawnRandomParticles();
+  spawnRandomParticles();
 }

@@ -1,10 +1,17 @@
 body {
   margin: 0;
-  margin-top: 25px;
+
   padding: 0;
   overflow: hidden;
   background-color: #000;
   display: flex;
   justify-content: center;
   align-content: center;
+  /* background: rgb(0, 0, 0); */
+  background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 70%, rgba(35, 35, 35, 1) 100%);
+}
+
+.p5Canvas {
+  width: auto !important;
+  height: 100vh !important;
 }
