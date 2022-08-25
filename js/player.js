@@ -13,9 +13,9 @@ class Player {
 
   update() {
     strokeWeight(2);
-    // fill(colorChange, colorChange, colorChange);
     fill(255, colorChange, 50);
     circle(this.x, this.y, this.d);
+
     // //debugging
     // fill(0);
     // textSize(40);
@@ -87,21 +87,17 @@ class Player {
     if (this.y > height - this.d / 10 && colorChange > 0) {
       colorChange -= 5;
     } else if (colorChange < 100) colorChange += 5;
-    // This has to go for now, maybe a generel function linked to obstacles for that?
-    // // Tried to implement some kind of guidance here, kinda working
-    // if (this.y > 180 && this.y < 260 && this.x > width / 2 - 10 && this.x < width / 2 + 10) this.x = width / 2;
-    // if (this.y > 380 && this.y < 460 && this.x > width / 2 - 10 && this.x < width / 2 + 10) this.x = width / 2;
   }
 }
 
 function gameStatus() {
-  if (player.y < height - 65) {
+  if (player.y < height / 2) {
     gameStarted = true;
   }
 
   if (gameStarted) {
-    if (levelCounter == 0) gameSpeed = 1.5;
-    else gameSpeed = 2.5;
+    gameSpeed = 1.5;
+    // gameSpeed = 3; // for developing
   }
 
   if (gameOver) {
@@ -189,9 +185,9 @@ function gameOverScreen() {
       textSize(75);
       fill(white);
       text("orb", width / 2, height / 2 - 15);
-      if (toggle) {
+      if (!toggle) {
         infobop.play();
-        toggle = false;
+        toggle = true;
       }
     }
 
@@ -230,14 +226,20 @@ function mousePressed() {
   if (startScreenShow && mouseX > width / 2 - 100 && mouseX < width / 2 + 100 && mouseY > height / 2 - 100 && mouseY < height / 2 + 100) {
     black = 255;
     white = 0;
-    infobop.play();
-    setTimeout(fromStartToGame, 2000);
+    if (!startGame) {
+      infobop.play();
+      setTimeout(fromStartToGame, 2000);
+      startGame = true;
+    }
   }
   if (gameOver && mouseX > width / 2 - 100 && mouseX < width / 2 + 100 && mouseY > height / 2 - 100 && mouseY < height / 2 + 100) {
     black = 255;
     white = 0;
-    infobop.play();
-    setTimeout(fromGameOverToGame, 2000);
+    if (!restartGame) {
+      infobop.play();
+      setTimeout(fromGameOverToGame, 2000);
+      restartGame = true;
+    }
   }
 }
 
@@ -258,19 +260,19 @@ function resetSketch(startScreenPlay) {
   score = 0;
   gameStarted = false;
   levelCounter = 0;
-
+  gameSpeed = 0;
   gameOver = false;
-
+  thingsArray = [];
   toggle = true;
-
+  // Startscreen
   circleD = 0;
   grow = true;
   growAmount = 1;
   startScreenCounter = 0;
   alphaCount = 0;
 
-  startScreenShow = startScreenPlay; //debuggen startscreen already declared... where?
-  // ###
+  startScreenShow = startScreenPlay;
+
   // GameOverScreen
   gameOverCircleD = 2000;
 
@@ -278,7 +280,4 @@ function resetSketch(startScreenPlay) {
   bgImg1 = loadImage("images/three.png");
   bgImg2 = loadImage("images/two.png");
   player = new Player();
-  // createThings();
-  spawnRandomParticles();
-  spawnRandomParticles();
 }

@@ -50,9 +50,10 @@ class ShrinkParticle extends SpecialParticle {
     this.y = y;
     this.d = d;
     this.morphAmmount = morphAmmount;
-    this.g = 200;
+    this.g = 230;
     this.sound = minimize;
   }
+  // super update here with colorChange on this.g???
 }
 
 class GrowParticle extends SpecialParticle {
@@ -62,7 +63,7 @@ class GrowParticle extends SpecialParticle {
     this.y = y;
     this.d = d;
     this.morphAmmount = -morphAmmount;
-    this.r = 200;
+    this.r = 230;
     this.sound = maximize;
   }
 }
@@ -82,7 +83,7 @@ class RandomParticle {
 
   update() {
     strokeWeight(1);
-    fill(200, 200, 0, colorChange / 6);
+    fill(200, 200, 0, colorChange / 2 - 20);
     circle(this.x, this.y, this.d);
 
     let hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
