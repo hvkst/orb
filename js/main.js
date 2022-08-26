@@ -1,46 +1,3 @@
-// Variables
-let colorChange = 100;
-let white = 255;
-let black = 0;
-
-let backBgY = 0;
-let midBgY = 0;
-let gameSpeed = 0;
-let randomParticles = [];
-let thingsArray = [];
-let score = 0;
-let gameStarted = false;
-let levelCounter = 0;
-
-let gameOver = false;
-let startGame = false;
-let restartGame = false;
-
-let levelHeight = 500;
-
-// sounds
-let minimize, maximize, bop, succes, gameover, infobop, bgmusic;
-
-let toggle = true;
-
-let levelOneInfoA = "The 🟢 make orb shrink, the 🔴 make it grow.";
-let levelOneInfoB = "Use the arrow keys to move orb arround.";
-let levelOneInfoC = "You do not want to touch these... --> ";
-let levelTwoInfo = "OK! Let´s get a bit more serious! You want to hurry up here.";
-let levelThreeInfoA = "🟢 Get them all! 🔴";
-let levelThreeInfoB = "Don´t get too small!!";
-
-let circleD = 0;
-let grow = true;
-let growAmount = 1;
-let startScreenCounter = 0;
-let alphaCount = 0;
-
-let startScreenShow = true; //debuggen startscreen already declared... where?
-
-// GameOverScreen
-let gameOverCircleD = 2000;
-
 // Not using preload here, to avoid loadingscreen
 function loadBefore() {
   bgmusic = loadSound("sounds/background2.mp3");
@@ -54,18 +11,13 @@ function loadBefore() {
   infobop = loadSound("sounds/infobop.wav");
 }
 
-// when gameover and orb is pressed too early nothing happens....
-//
-//
-//
-
 function setup() {
   createCanvas(750, 900);
   loadBefore();
   slider = createSlider(0, 1, 0.1, 0.02);
   slider.position(50, 50);
   slider.style("width", "80px");
-  resetSketch(true);
+  resetSketch(true, 0);
 }
 
 function draw() {
@@ -83,7 +35,7 @@ function draw() {
     gameStatus();
     drawScore();
     spawnNewLevel();
-    debugging();
+    // debugging();
   }
 }
 
@@ -93,6 +45,8 @@ function spawnNewLevel() {
   if (levelCounter === 2) spawnLevelThree();
   if (levelCounter === 3) spawnLevelFour();
   if (levelCounter === 4) spawnLevelFive();
+  if (levelCounter === 5) spawnLevelSix();
+  if (levelCounter === 6) spawnLevelSeven();
 }
 
 function updateObstacleAndParticles() {
@@ -149,8 +103,8 @@ function updateRandomParticles() {
     return !particle.collided;
   });
 
-  if (randomParticles.length < 10) {
-    for (let i = 0; i < 10; i++) {
+  if (randomParticles.length < 20) {
+    for (let i = 0; i < 1; i++) {
       randomParticles.push(new RandomParticle());
     }
   }
@@ -168,14 +122,14 @@ function spawnLevelOne() {
     thingsArray.push(new TextInfo(width / 2 - 250, 340, 340, 90, levelOneInfoA, 300, 20));
     thingsArray.push(new TextInfo(width - 430, height - 320, 300, 90, levelOneInfoB, 300, 0));
 
-    thingsArray.push(new Obstacle(150, 600, width / 2 - 250, 20));
+    thingsArray.push(new Obstacle(175, 600, 100, 20));
     // box right
     thingsArray.push(new Obstacle(width - width / 2 + 52, 400, width / 2 - 32, 20));
     thingsArray.push(new Obstacle(width - width / 2 + 40, 200, width / 2 - 20, 20));
     thingsArray.push(new Obstacle(width - 20, 220, 20, 180));
-    thingsArray.push(new Obstacle(width / 2 + 100, 220, 20, 40));
-    thingsArray.push(new Obstacle(width / 2 + 100, 360, 20, 40));
-    thingsArray.push(new MovingObstacle(0, 120, 240, 80, width / 2 + 20, 115, 1));
+    thingsArray.push(new Obstacle(width / 2 + 100, 220, 20, 35));
+    thingsArray.push(new Obstacle(width / 2 + 100, 365, 20, 35));
+    thingsArray.push(new MovingObstacle(0, 120, 240, 80, width / 2 + 20, 115, 1.5));
 
     thingsArray.push(new TextInfo(5, 109, 275, 90, levelOneInfoC, 275, 0));
     // three
@@ -200,61 +154,61 @@ function spawnLevelOne() {
 function spawnLevelTwo() {
   gameSpeed = 2.5;
   if (toggle) {
-    thingsArray.push(new TextInfo(width / 2 - 275, 495 - levelHeight, 500, 80, levelTwoInfo, 480, 0));
+    thingsArray.push(new TextInfo(width / 2 - 275, -5, 420, 80, levelTwoInfo, 400, 10));
     // One
-    thingsArray.push(new MovingObstacle(width, 607 - levelHeight, 150, 6, width, 160, 3));
-    thingsArray.push(new MovingObstacle(width - 950, 607 - levelHeight, 150, 6, width - 450, 160, 3));
-    thingsArray.push(new Obstacle(-10, 600 - levelHeight, width - 150, 20));
-    thingsArray.push(new Obstacle(width - 30, 600 - levelHeight, 60, 20));
+    thingsArray.push(new MovingObstacle(width, 107, 150, 6, width, 160, 3));
+    thingsArray.push(new MovingObstacle(width - 950, 107, 150, 6, width - 450, 160, 3));
+    thingsArray.push(new Obstacle(-10, 100, width - 150, 20));
+    thingsArray.push(new Obstacle(width - 30, 100, 60, 20));
     // Two
-    thingsArray.push(new MovingObstacle(140, 457 - levelHeight, 200, 6, 140, 60, 2));
-    thingsArray.push(new MovingObstacle(-300, 457 - levelHeight, 200, 6, -180, 60, 2));
-    thingsArray.push(new Obstacle(140, 450 - levelHeight, width - 100, 20));
-    thingsArray.push(new Obstacle(0, 340 - levelHeight, 20, 260));
-    thingsArray.push(new Obstacle(width - 20, 340 - levelHeight, 20, 260));
-    thingsArray.push(new ShrinkParticle(80, 540 - levelHeight, 20, 10));
-    thingsArray.push(new ShrinkParticle(80, 440 - levelHeight, 20, 10));
+    thingsArray.push(new MovingObstacle(140, -43, 200, 6, 140, 60, 2));
+    thingsArray.push(new MovingObstacle(-300, -43, 200, 6, -180, 60, 2));
+    thingsArray.push(new Obstacle(140, -50, width - 100, 20));
+    thingsArray.push(new Obstacle(0, -160, 20, 260));
+    thingsArray.push(new Obstacle(width - 20, -160, 20, 260));
+    thingsArray.push(new ShrinkParticle(80, 40, 20, 10));
+    thingsArray.push(new ShrinkParticle(80, -60, 20, 10));
     // Three
 
-    thingsArray.push(new MovingObstacle(width - 300, 327 - levelHeight, 100, 6, width - 300, 200, 5));
-    thingsArray.push(new Obstacle(-10, 320 - levelHeight, width - 190, 20));
-    thingsArray.push(new ShrinkParticle(width - 150, 395 - levelHeight, 20, 10));
-    thingsArray.push(new ShrinkParticle(width - 300, 395 - levelHeight, 20, 10));
-    thingsArray.push(new ShrinkParticle(width - 450, 395 - levelHeight, 20, 10));
+    thingsArray.push(new MovingObstacle(width - 300, -173, 100, 6, width - 300, 200, 5));
+    thingsArray.push(new Obstacle(-10, -180, width - 190, 20));
+    thingsArray.push(new ShrinkParticle(width - 150, -105, 20, 10));
+    thingsArray.push(new ShrinkParticle(width - 300, -105, 20, 10));
+    thingsArray.push(new ShrinkParticle(width - 450, -105, 20, 10));
     // Box right
-    thingsArray.push(new Obstacle(width - 100, 220 - levelHeight, 20, 120));
-    thingsArray.push(new Obstacle(width - 80, 320 - levelHeight, 120, 20));
-    thingsArray.push(new ShrinkParticle(width - 50, 280 - levelHeight, 20, 10));
+    thingsArray.push(new Obstacle(width - 100, -280, 20, 120));
+    thingsArray.push(new Obstacle(width - 80, -180, 120, 20));
+    thingsArray.push(new ShrinkParticle(width - 50, -220, 20, 10));
     // Four
-    thingsArray.push(new ShrinkParticle(50, 280 - levelHeight, 20, 10));
-    thingsArray.push(new Obstacle(110, 220 - levelHeight, width - 100, 20));
-    thingsArray.push(new Obstacle(-10, 220 - levelHeight, 70, 20));
+    thingsArray.push(new ShrinkParticle(50, -220, 20, 10));
+    thingsArray.push(new Obstacle(110, -280, width - 100, 20));
+    thingsArray.push(new Obstacle(-10, -280, 70, 20));
     // Five
-    thingsArray.push(new Obstacle(-10, 140 - levelHeight, width - 200, 20));
-    thingsArray.push(new Obstacle(0, 160 - levelHeight, 20, 60));
+    thingsArray.push(new Obstacle(-10, -360, width - 200, 20));
+    thingsArray.push(new Obstacle(0, -340, 20, 60));
     // Second box right
     // vert
-    thingsArray.push(new Obstacle(width - 90, 60 - levelHeight, 20, 100));
-    thingsArray.push(new Obstacle(width - 160, 0 - levelHeight, 20, 220));
-    thingsArray.push(new Obstacle(width - 20, 60 - levelHeight, 20, 160));
+    thingsArray.push(new Obstacle(width - 90, -440, 20, 100));
+    thingsArray.push(new Obstacle(width - 160, -500, 20, 220));
+    thingsArray.push(new Obstacle(width - 20, -440, 20, 160));
     // hori
-    thingsArray.push(new Obstacle(width - 90, 60 - levelHeight, 150, 20));
-    thingsArray.push(new ShrinkParticle(width - 45, 180 - levelHeight, 20, 10));
-    thingsArray.push(new GrowParticle(width - 45, 110 - levelHeight, 20, 10));
+    thingsArray.push(new Obstacle(width - 90, -440, 150, 20));
+    thingsArray.push(new ShrinkParticle(width - 45, -320, 20, 10));
+    thingsArray.push(new GrowParticle(width - 45, -390, 20, 10));
     // Six
-    thingsArray.push(new Obstacle(width - 240, 0 - levelHeight, 250, 20));
-    thingsArray.push(new Obstacle(-10, 0 - levelHeight, width - 260, 20));
-    thingsArray.push(new ShrinkParticle(500, 80 - levelHeight, 20, 10));
-    thingsArray.push(new ShrinkParticle(50, -50 - levelHeight, 20, 10));
+    thingsArray.push(new Obstacle(width - 240, -500, 250, 20));
+    thingsArray.push(new Obstacle(-10, -500, width - 260, 20));
+    thingsArray.push(new ShrinkParticle(500, -420, 20, 10));
+    thingsArray.push(new ShrinkParticle(50, -450, 20, 10));
     // vert
-    thingsArray.push(new Obstacle(0, 60 - levelHeight, 20, 80));
-    thingsArray.push(new Obstacle(80, 20 - levelHeight, 20, 80));
-    thingsArray.push(new Obstacle(160, 60 - levelHeight, 20, 80));
-    thingsArray.push(new Obstacle(240, 20 - levelHeight, 20, 80));
-    thingsArray.push(new Obstacle(320, 60 - levelHeight, 20, 80));
-    thingsArray.push(new Obstacle(400, 20 - levelHeight, 20, 80));
+    thingsArray.push(new Obstacle(0, -440, 20, 80));
+    thingsArray.push(new Obstacle(80, -480, 20, 80));
+    thingsArray.push(new Obstacle(160, -440, 20, 80));
+    thingsArray.push(new Obstacle(240, 20 - 500, 20, 80));
+    thingsArray.push(new Obstacle(320, -440, 20, 80));
+    thingsArray.push(new Obstacle(400, 20 - 500, 20, 80));
 
-    thingsArray.push(new LevelFinish(-20, -100 - levelHeight, width + 20, 20, 15, 30, 1));
+    thingsArray.push(new LevelFinish(-20, -600, width + 20, 20, 15, 30, 1));
 
     toggle = false;
   }
@@ -271,8 +225,7 @@ function spawnLevelThree() {
 
     thingsArray.push(new LevelFinish(-20, -1820, width + 40, 20, 145, 8, 1));
     for (let i = 0; i < 15; i++) {
-      // Could use more logic here to make it harder...
-      thingsArray.push(new GrowParticle(width / 2 + round(random(-300, 300)), round(random(-50, -1600)), 20, 10));
+      thingsArray.push(new GrowParticle(width / 2 + round(random(-300, 300)), round(random(-100, -1600)), 20, 10));
       thingsArray.push(new ShrinkParticle(width / 2 + round(random(-300, 300)), round(random(-200, -1600)), 20, 10));
       thingsArray.push(new GrowParticle(width / 2 + round(random(-300, 300)), round(random(-300, -1600)), 20, 10));
       thingsArray.push(new ShrinkParticle(width / 2 + round(random(-300, 300)), round(random(-300, -1750)), 20, 10));
@@ -280,24 +233,23 @@ function spawnLevelThree() {
     for (let i = 0; i < 13; i++) {
       thingsArray.push(new GrowParticle(width / 2 + round(random(-300, 300)), round(random(-1000, -1750)), 20, 10));
     }
-    thingsArray.push(new MovingObstacle(560, -100, 50, 15, width / 2 - 25, 325, 2));
-    thingsArray.push(new MovingObstacle(140, -500, 50, 15, width / 2 - 25, 225, 2));
-    thingsArray.push(new MovingObstacle(210, -900, 50, 15, width / 2 - 25, 275, 2));
-    thingsArray.push(new MovingObstacle(420, -1300, 50, 15, width / 2 - 25, 225, 2));
-    thingsArray.push(new MovingObstacle(700, -1700, 50, 15, width / 2 - 25, 325, 2));
+
+    for (let i = -100; i > -1800; i -= 400) {
+      thingsArray.push(new MovingObstacle(random(140, 700), i, 50, 15, width / 2 - 25, 325, random(1, 3)));
+    }
   }
   toggle = false;
 }
 
 function spawnLevelFour() {
+  // Level Four ist still upside down here
   gameSpeed = 3;
   if (toggle) {
-    // // Level 4 testing
     // // finish box
     // // up&down
     thingsArray.push(new LevelFinish(240, -740, 120, 20, 245, 50, 0));
     // left&right
-    thingsArray.push(new LevelFinish(200, -740, 20, 220, 245, 50, 0));
+    thingsArray.push(new LevelFinish(200, -740, 20, 220, 245, 50, 1));
     thingsArray.push(new LevelFinish(380, -740, 20, 220, 245, 50, 0));
     // up
     thingsArray.push(new Obstacle(-20, -500, 240, 20));
@@ -323,48 +275,71 @@ function spawnLevelFour() {
     for (let i = 0; i < 10; i++) {
       thingsArray.push(new GrowParticle(random(250, 350), random(-70, -90) - 600, 20, 10));
     }
-
-    thingsArray.push(new Obstacle(-20, 240 - 1700, width / 2 + 160, 20));
-    thingsArray.push(new Obstacle(width / 2 + 180, 240 - 1700, width / 2 - 160, 20));
-    thingsArray.push(new MovingObstacle(0, 235 - 1700, 100, 5, 325, 330, 2));
-    thingsArray.push(new MovingObstacle(-300, 235 - 1700, 100, 5, 325, 330, 2.5));
-    thingsArray.push(new MovingObstacle(-600, 235 - 1700, 100, 5, 325, 330, 3));
-    thingsArray.push(new MovingObstacle(0, 150 - 1700, 200, 5, 275, 275, 4));
-
-    thingsArray.push(new Obstacle(-20, 300 - 1700, width / 2 - 200, 20));
-    thingsArray.push(new Obstacle(width / 2 - 180, 300 - 1700, width / 2 + 200, 20));
-    thingsArray.push(new MovingObstacle(-100, 320 - 1700, 100, 5, 325, 330, 2));
-    thingsArray.push(new MovingObstacle(500, 320 - 1700, 100, 5, 325, 330, 2));
-
-    thingsArray.push(new Obstacle(-20, 400 - 1700, width / 2 + 200, 20));
-    thingsArray.push(new Obstacle(width / 2 + 220, 400 - 1700, width / 2 - 200, 20));
-    thingsArray.push(new MovingObstacle(200, 420 - 1700, 100, 5, 325, 330, 2));
-
-    thingsArray.push(new Obstacle(-20, 500 - 1700, width / 2 - 200, 20));
-    thingsArray.push(new Obstacle(width / 2 - 180, 500 - 1700, width / 2 + 200, 20));
-    thingsArray.push(new MovingObstacle(-100, 520 - 1700, 100, 5, 325, 330, 2));
-
-    thingsArray.push(new Obstacle(-20, 600 - 1700, width / 2, 20));
-    thingsArray.push(new Obstacle(width / 2 + 20, 600 - 1700, width / 2, 20));
-    thingsArray.push(new MovingObstacle(500, 620 - 1700, 100, 5, 325, 330, 2));
-
-    for (let i = 2; i <= 12; i++) {
-      thingsArray.push(new ShrinkParticle(i * 55, i * 10 - 900, 30, 20));
-    }
-    thingsArray.push(new LevelFinish(-20, -1700, width + 40, 20, 145, 8, 1));
-
     toggle = false;
   }
-  // function spawnLevelFive(){
-  // gameSpeed = 5
-  if (thingsArray.length < 3) {
-    thingsArray.push(new ShrinkParticle(random(0, width), random(0, height * 0.9), 20, 10));
-    thingsArray.push(new GrowParticle(random(0, width), random(0, height * 0.9), 20, 10));
+}
+
+function spawnLevelFive() {
+  gameSpeed = 3;
+  if (toggle) {
+    thingsArray.push(new Obstacle(-20, -760, width / 2 + 160, 20));
+    thingsArray.push(new Obstacle(width / 2 + 180, -760, width / 2 - 160, 20));
+    thingsArray.push(new MovingObstacle(0, -765, 100, 5, 325, 330, 2));
+    thingsArray.push(new MovingObstacle(-300, -765, 100, 5, 325, 330, 2.5));
+    thingsArray.push(new MovingObstacle(-600, -765, 100, 5, 325, 330, 3));
+    thingsArray.push(new MovingObstacle(0, -850, 200, 5, 275, 275, 4));
+    thingsArray.push(new MovingObstacle(-750, -900, 200, 5, 275, 275, 4));
+
+    thingsArray.push(new Obstacle(-20, -700, width / 2 - 200, 20));
+    thingsArray.push(new Obstacle(width / 2 - 180, -700, width / 2 + 200, 20));
+    thingsArray.push(new MovingObstacle(-100, -680, 100, 5, 325, 330, 2));
+    thingsArray.push(new MovingObstacle(500, -680, 100, 5, 325, 330, 2));
+
+    thingsArray.push(new Obstacle(-20, -600, width / 2 + 200, 20));
+    thingsArray.push(new Obstacle(width / 2 + 220, -600, width / 2 - 200, 20));
+    thingsArray.push(new MovingObstacle(200, -580, 100, 5, 325, 330, 2));
+
+    thingsArray.push(new Obstacle(-20, -500, width / 2 - 200, 20));
+    thingsArray.push(new Obstacle(width / 2 - 180, -500, width / 2 + 200, 20));
+    thingsArray.push(new MovingObstacle(-100, -480, 100, 5, 325, 330, 2));
+
+    thingsArray.push(new Obstacle(-20, -400, width / 2, 20));
+    thingsArray.push(new Obstacle(width / 2 + 20, -400, width / 2, 20));
+    thingsArray.push(new MovingObstacle(500, -380, 100, 5, 325, 330, 2));
+
+    thingsArray.push(new Obstacle(-20, -300, width / 2 - 50, 20));
+    thingsArray.push(new Obstacle(width / 2 + 70, -300, width / 2 - 50, 20));
+
+    for (let i = 1; i <= 5; i++) {
+      thingsArray.push(new ShrinkParticle((width / 12) * i, 0 - i * 50, 30, 20)); //-100
+      thingsArray.push(new ShrinkParticle(width - (width / 12) * i, 0 - i * 50, 30, 20));
+    }
+    thingsArray.push(new ShrinkParticle(width / 2, -300, 30, 20));
+    thingsArray.push(new LevelFinish(-20, -1000, width + 40, 20, 25, 50, 1));
   }
   toggle = false;
 }
 
-function spawnLevelFive() {
+function spawnLevelSix() {
+  gameSpeed = 4;
+  if (toggle) {
+    thingsArray.push(new TextInfo(width / 2 - 160, -100, 280, 90, levelSixInfoA, 250, 15));
+    thingsArray.push(new TextInfo(width / 2 - 120, -600, 280, 135, levelSixInfoB, 250, 15));
+    thingsArray.push(new TextInfo(width / 2 - 285, -900, 630, 90, levelSixInfoC, 600, 15));
+
+    thingsArray.push(new TextInfo(width / 2 - 200, -1600, 450, 45, levelSixInfoD, 420, 15));
+    thingsArray.push(new TextInfo(width / 2 - 50, -2000, 280, 45, levelSixInfoE, 250, 15));
+
+    thingsArray.push(new TextInfo(width / 2 - 140, -2400, 390, 90, levelSixInfoF, 370, 15));
+    thingsArray.push(new TextInfo(width / 2 - 140, -2700, 240, 90, levelSixInfoG, 220, 15));
+    thingsArray.push(new TextInfo(width / 2 - 140, -3000, 360, 135, levelSixInfoH, 330, 15));
+    thingsArray.push(new TextInfo(width / 2 - 140, -3200, 180, 45, levelSixInfoI, 150, 15));
+    thingsArray.push(new LevelFinish(-20, -3400, width + 20, 20, 25, 110, 1));
+  }
+  toggle = false;
+}
+
+function spawnLevelSeven() {
   gameSpeed = 8;
 
   if (thingsArray.length < 8) {
@@ -397,7 +372,7 @@ function debugging() {
   text(`x ${player.x} | y ${player.y}`, 10, height - 140);
   text(`baseD ${player.baseD}`, 10, height - 120);
   text(`gameSpeed: ${gameSpeed}`, 10, height - 100);
-  text(`slider ${slider.value()}`, 10, height - 80);
+  text(`FPS ${round(frameRate())}`, 10, height - 80);
   text(`gameStarted ${gameStarted}`, 10, height - 60);
   text(`gameOver ${gameOver}`, 10, height - 40);
   text(`thingsArray.length ${thingsArray.length}`, 10, height - 20);

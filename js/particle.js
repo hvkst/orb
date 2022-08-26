@@ -7,7 +7,6 @@ class SpecialParticle {
     this.sound = sound;
     this.randomN = round(random(1, 11)) / 10;
     this.collided = false;
-    // this.color = `0, ${colorChange + 70}, 0`;
     this.r = 0;
     this.g = 0;
     this.b = 0;
@@ -34,7 +33,7 @@ class SpecialParticle {
       this.x += random(-1, 1);
       this.y += random(-1, 1);
     }
-    // this inside gameplay-function
+
     if (gameStarted) {
       this.y += gameSpeed * 0.2;
     }
@@ -51,7 +50,6 @@ class ShrinkParticle extends SpecialParticle {
     this.g = 230;
     this.sound = minimize;
   }
-  // super update here with colorChange on this.g???
 }
 
 class GrowParticle extends SpecialParticle {
@@ -68,8 +66,8 @@ class GrowParticle extends SpecialParticle {
 
 class RandomParticle {
   constructor() {
-    let randomX = random(0, width);
-    let randomY = random(0, height);
+    let randomX = random(20, width - 20);
+    let randomY = random(0, height * 0.7);
     let randomD = random(8, 22);
     this.collided = false;
     this.x = randomX;
