@@ -28,10 +28,8 @@ class SpecialParticle {
 
     let distance = dist(this.x, this.y, player.x, player.y);
 
-    // fill(0);
-    // textSize(15);
-    // textAlign(CENTER);
-    // text(`${round(distance)}`, this.x, this.y);
+    if (this.y > height + 20) this.collided = true;
+
     if (distance < 300) {
       this.x += random(-1, 1);
       this.y += random(-1, 1);
@@ -68,13 +66,11 @@ class GrowParticle extends SpecialParticle {
   }
 }
 
-// movIt Function would be good here
-
 class RandomParticle {
   constructor() {
     let randomX = random(0, width);
     let randomY = random(0, height);
-    let randomD = random(10, 20);
+    let randomD = random(8, 22);
     this.collided = false;
     this.x = randomX;
     this.y = randomY;
@@ -88,7 +84,7 @@ class RandomParticle {
 
     let hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
     if (hit) {
-      slime.play();
+      bop.play();
       this.collided = true;
       score++;
     }

@@ -17,9 +17,9 @@ let startGame = false;
 let restartGame = false;
 
 let levelHeight = 500;
-// Need a gameplay-function here... if game started something.y += gamespeed
+
 // sounds
-let minimize, maximize, slime, succes, gameover, infobop, bgmusic;
+let minimize, maximize, bop, succes, gameover, infobop, bgmusic;
 
 let toggle = true;
 
@@ -37,28 +37,23 @@ let startScreenCounter = 0;
 let alphaCount = 0;
 
 let startScreenShow = true; //debuggen startscreen already declared... where?
-// ###
+
 // GameOverScreen
 let gameOverCircleD = 2000;
 
-function preload() {
-  bgmusic = loadSound("./sounds/background2.mp3");
-}
 // Not using preload here, to avoid loadingscreen
 function loadBefore() {
+  bgmusic = loadSound("sounds/background2.mp3");
   font = loadFont("fonts/MPLUSROUNDED1C-BOLD.TTF");
   // sounds
-  minimize = loadSound("./sounds/minimize.wav");
-  maximize = loadSound("./sounds/maximize.wav");
-  slime = loadSound("./sounds/slime.wav");
-  succes = loadSound("./sounds/succes.wav");
-  gameover = loadSound("./sounds/gameover.wav");
-  infobop = loadSound("./sounds/infobop.wav");
+  minimize = loadSound("sounds/minimize.wav");
+  maximize = loadSound("sounds/maximize.wav");
+  bop = loadSound("sounds/bop.wav");
+  succes = loadSound("sounds/succes.wav");
+  gameover = loadSound("sounds/gameover.wav");
+  infobop = loadSound("sounds/infobop.wav");
 }
 
-//
-//
-// Still the obstacle in two sometimes...
 // when gameover and orb is pressed too early nothing happens....
 //
 //
@@ -67,7 +62,7 @@ function loadBefore() {
 function setup() {
   createCanvas(750, 900);
   loadBefore();
-  slider = createSlider(0, 1, 0.5, 0.02);
+  slider = createSlider(0, 1, 0.1, 0.02);
   slider.position(50, 50);
   slider.style("width", "80px");
   resetSketch(true);
@@ -93,10 +88,11 @@ function draw() {
 }
 
 function spawnNewLevel() {
-  if (levelCounter == 0) spawnLevelOne();
-  if (levelCounter == 1) spawnLevelTwo();
-  if (levelCounter == 2) spawnLevelThree();
-  if (levelCounter == 3) spawnLevelFour();
+  if (levelCounter === 0) spawnLevelOne();
+  if (levelCounter === 1) spawnLevelTwo();
+  if (levelCounter === 2) spawnLevelThree();
+  if (levelCounter === 3) spawnLevelFour();
+  if (levelCounter === 4) spawnLevelFive();
 }
 
 function updateObstacleAndParticles() {
@@ -153,7 +149,7 @@ function updateRandomParticles() {
     return !particle.collided;
   });
 
-  if (randomParticles.length < 40) {
+  if (randomParticles.length < 10) {
     for (let i = 0; i < 10; i++) {
       randomParticles.push(new RandomParticle());
     }
@@ -203,16 +199,13 @@ function spawnLevelOne() {
 
 function spawnLevelTwo() {
   gameSpeed = 2.5;
-  // gameSpeed = 3.5;
   if (toggle) {
     thingsArray.push(new TextInfo(width / 2 - 275, 495 - levelHeight, 500, 80, levelTwoInfo, 480, 0));
-    // Level 2
     // One
     thingsArray.push(new MovingObstacle(width, 607 - levelHeight, 150, 6, width, 160, 3));
-    thingsArray.push(new MovingObstacle(width - 850, 607 - levelHeight, 150, 6, width - 450, 160, 3));
+    thingsArray.push(new MovingObstacle(width - 950, 607 - levelHeight, 150, 6, width - 450, 160, 3));
     thingsArray.push(new Obstacle(-10, 600 - levelHeight, width - 150, 20));
     thingsArray.push(new Obstacle(width - 30, 600 - levelHeight, 60, 20));
-
     // Two
     thingsArray.push(new MovingObstacle(140, 457 - levelHeight, 200, 6, 140, 60, 2));
     thingsArray.push(new MovingObstacle(-300, 457 - levelHeight, 200, 6, -180, 60, 2));
@@ -221,28 +214,24 @@ function spawnLevelTwo() {
     thingsArray.push(new Obstacle(width - 20, 340 - levelHeight, 20, 260));
     thingsArray.push(new ShrinkParticle(80, 540 - levelHeight, 20, 10));
     thingsArray.push(new ShrinkParticle(80, 440 - levelHeight, 20, 10));
-
     // Three
-    thingsArray.push(new MovingObstacle(width, 327 - levelHeight, 150, 6, width, 200, 5));
+
+    thingsArray.push(new MovingObstacle(width - 300, 327 - levelHeight, 100, 6, width - 300, 200, 5));
     thingsArray.push(new Obstacle(-10, 320 - levelHeight, width - 190, 20));
     thingsArray.push(new ShrinkParticle(width - 150, 395 - levelHeight, 20, 10));
     thingsArray.push(new ShrinkParticle(width - 300, 395 - levelHeight, 20, 10));
     thingsArray.push(new ShrinkParticle(width - 450, 395 - levelHeight, 20, 10));
-
     // Box right
     thingsArray.push(new Obstacle(width - 100, 220 - levelHeight, 20, 120));
     thingsArray.push(new Obstacle(width - 80, 320 - levelHeight, 120, 20));
     thingsArray.push(new ShrinkParticle(width - 50, 280 - levelHeight, 20, 10));
-
     // Four
     thingsArray.push(new ShrinkParticle(50, 280 - levelHeight, 20, 10));
     thingsArray.push(new Obstacle(110, 220 - levelHeight, width - 100, 20));
     thingsArray.push(new Obstacle(-10, 220 - levelHeight, 70, 20));
-
     // Five
     thingsArray.push(new Obstacle(-10, 140 - levelHeight, width - 200, 20));
     thingsArray.push(new Obstacle(0, 160 - levelHeight, 20, 60));
-
     // Second box right
     // vert
     thingsArray.push(new Obstacle(width - 90, 60 - levelHeight, 20, 100));
@@ -252,11 +241,9 @@ function spawnLevelTwo() {
     thingsArray.push(new Obstacle(width - 90, 60 - levelHeight, 150, 20));
     thingsArray.push(new ShrinkParticle(width - 45, 180 - levelHeight, 20, 10));
     thingsArray.push(new GrowParticle(width - 45, 110 - levelHeight, 20, 10));
-
     // Six
     thingsArray.push(new Obstacle(width - 240, 0 - levelHeight, 250, 20));
     thingsArray.push(new Obstacle(-10, 0 - levelHeight, width - 260, 20));
-    // new ShrinkParticle(50, 80 - levelHeight, 20, 10),
     thingsArray.push(new ShrinkParticle(500, 80 - levelHeight, 20, 10));
     thingsArray.push(new ShrinkParticle(50, -50 - levelHeight, 20, 10));
     // vert
@@ -283,7 +270,7 @@ function spawnLevelThree() {
     thingsArray.push(new Obstacle(width - 20, -1800, 20, 2000));
 
     thingsArray.push(new LevelFinish(-20, -1820, width + 40, 20, 145, 8, 1));
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 15; i++) {
       // Could use more logic here to make it harder...
       thingsArray.push(new GrowParticle(width / 2 + round(random(-300, 300)), round(random(-50, -1600)), 20, 10));
       thingsArray.push(new ShrinkParticle(width / 2 + round(random(-300, 300)), round(random(-200, -1600)), 20, 10));
@@ -303,7 +290,7 @@ function spawnLevelThree() {
 }
 
 function spawnLevelFour() {
-  gameSpeed = 2.5;
+  gameSpeed = 3;
   if (toggle) {
     // // Level 4 testing
     // // finish box
@@ -362,15 +349,38 @@ function spawnLevelFour() {
     thingsArray.push(new MovingObstacle(500, 620 - 1700, 100, 5, 325, 330, 2));
 
     for (let i = 2; i <= 12; i++) {
-      thingsArray.push(new ShrinkParticle(i * 55, -900, 30, 20));
+      thingsArray.push(new ShrinkParticle(i * 55, i * 10 - 900, 30, 20));
     }
+    thingsArray.push(new LevelFinish(-20, -1700, width + 40, 20, 145, 8, 1));
+
+    toggle = false;
   }
   // function spawnLevelFive(){
+  // gameSpeed = 5
   if (thingsArray.length < 3) {
-    thingsArray.push(new ShrinkParticle(random(0, width), random(0, height * 0.9), random(20, 60), 10));
-    thingsArray.push(new GrowParticle(random(0, width), random(0, height * 0.9), random(20, 60), 10));
+    thingsArray.push(new ShrinkParticle(random(0, width), random(0, height * 0.9), 20, 10));
+    thingsArray.push(new GrowParticle(random(0, width), random(0, height * 0.9), 20, 10));
   }
   toggle = false;
+}
+
+function spawnLevelFive() {
+  gameSpeed = 8;
+
+  if (thingsArray.length < 8) {
+    for (let i = 0; i < 2; i++) {
+      thingsArray.push(new ShrinkParticle(random(0, width), random(0, -height), 20, 10));
+      thingsArray.push(new GrowParticle(random(0, width), random(0, -height), 20, 10));
+    }
+    thingsArray.push(new MovingObstacle(-100, random(0, 100), random(50, 100), 5, width / 2 - 50, 350, random(1, 6)));
+    thingsArray.push(new MovingObstacle(width + 100, random(-500, -600), random(50, 100), 5, width / 2 - 50, 350, random(1, 6)));
+
+    if (score > 100) {
+      for (let i = 0; i < round(score / 200); i++) {
+        thingsArray.push(new MovingObstacle(-100, random(0, -1500), random(50, 100), 5, width / 2 - 50, 350, random(6, 8)));
+      }
+    }
+  }
 }
 
 function debugging() {

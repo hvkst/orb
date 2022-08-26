@@ -245,11 +245,11 @@ function mousePressed() {
 
 function fromStartToGame() {
   startScreenShow = false;
-  bgmusic.play();
+  bgmusic.loop();
 }
 
 function fromGameOverToGame() {
-  bgmusic.play();
+  bgmusic.loop();
   resetSketch(false);
 }
 
