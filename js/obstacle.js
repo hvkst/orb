@@ -1,3 +1,4 @@
+// Still need some comments here...
 class Obstacle {
   constructor(x, y, w, h) {
     this.x = x;

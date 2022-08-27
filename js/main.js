@@ -1,8 +1,8 @@
 // Not using preload here, to avoid loadingscreen
 function loadBefore() {
-  bgmusic = loadSound("sounds/background2.mp3");
   font = loadFont("fonts/MPLUSROUNDED1C-BOLD.TTF");
   // sounds
+  bgmusic = loadSound("sounds/background2.mp3");
   minimize = loadSound("sounds/minimize.wav");
   maximize = loadSound("sounds/maximize.wav");
   bop = loadSound("sounds/bop.wav");

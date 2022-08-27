@@ -15,14 +15,14 @@ class Player {
     strokeWeight(2);
     fill(255, colorChange, 50);
     circle(this.x, this.y, this.d);
-
+    // this.d and this.baseD used here to avoid endless growing, both start the same, but only this.d changes when growing
     if (this.d > this.baseD + this.growRange) {
       this.grow = false;
     }
     if (this.d < this.baseD - this.growRange) {
       this.grow = true;
     }
-
+    // different "breathing" tempo when at smallest or largest point
     if (this.grow == true) {
       if (this.d > this.baseD + this.growRange - 3) {
         this.d += this.growAmount / 2;
@@ -38,7 +38,7 @@ class Player {
         colorChange -= 2;
       }
     }
-
+    // Game over if too small
     if (this.baseD < 0) {
       gameOver = true;
     }
@@ -61,18 +61,21 @@ class Player {
   }
 
   limitMovement() {
+    // looping thorugh left and right side
     if (this.x < 0 - this.d / 2) {
       this.x = width + this.d / 8;
     }
     if (this.x > width + this.d / 2) {
       this.x = 0 - this.d / 8;
     }
+    // not looping up and down
     if (this.y < 0 + this.d / 2) {
       this.y = 0 + this.d / 2;
     }
     if (this.y > height + this.d / 4) {
       this.y = height + this.d / 4;
     }
+    // changing color to red, when in the danger zone (bottom)
     if (this.y > height - this.d / 10 && colorChange > 0) {
       colorChange -= 5;
     } else if (colorChange < 100) colorChange += 5;
