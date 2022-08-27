@@ -84,7 +84,7 @@ class RandomParticle {
     if (hit) {
       bop.play();
       this.collided = true;
-      score++;
+      score += round(this.d / 10);
     }
 
     if (this.x < 0 + this.d) {

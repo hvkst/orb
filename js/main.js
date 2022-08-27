@@ -14,7 +14,7 @@ function loadBefore() {
 function setup() {
   createCanvas(750, 900);
   loadBefore();
-  slider = createSlider(0, 1, 0.1, 0.02);
+  slider = createSlider(0, 0.6, 0.3, 0.02);
   slider.position(50, 50);
   slider.style("width", "80px");
   resetSketch(true, 0);
@@ -83,13 +83,6 @@ function drawBackground() {
   if (midBgY >= height + 100) {
     midBgY = 0;
   }
-}
-
-function drawScore() {
-  textAlign(CENTER);
-  fill(255);
-  textSize(20);
-  text(`${score}`, 20, 20);
 }
 
 function updateRandomParticles() {
@@ -215,7 +208,7 @@ function spawnLevelTwo() {
 }
 
 function spawnLevelThree() {
-  gameSpeed = 3;
+  gameSpeed = 3.5;
   if (toggle) {
     thingsArray.push(new TextInfo(width / 2 - 150, 100, 300, 60, levelThreeInfoA, 300, 0));
     thingsArray.push(new TextInfo(width / 2 - 150, 0, 300, 60, levelThreeInfoB, 300, 0));
@@ -225,13 +218,13 @@ function spawnLevelThree() {
 
     thingsArray.push(new LevelFinish(-20, -1820, width + 40, 20, 145, 8, 1));
     for (let i = 0; i < 15; i++) {
-      thingsArray.push(new GrowParticle(width / 2 + round(random(-300, 300)), round(random(-100, -1600)), 20, 10));
+      thingsArray.push(new GrowParticle(width / 2 + round(random(-300, 300)), round(random(-50, -1600)), 20, 10));
       thingsArray.push(new ShrinkParticle(width / 2 + round(random(-300, 300)), round(random(-200, -1600)), 20, 10));
       thingsArray.push(new GrowParticle(width / 2 + round(random(-300, 300)), round(random(-300, -1600)), 20, 10));
       thingsArray.push(new ShrinkParticle(width / 2 + round(random(-300, 300)), round(random(-300, -1750)), 20, 10));
     }
     for (let i = 0; i < 13; i++) {
-      thingsArray.push(new GrowParticle(width / 2 + round(random(-300, 300)), round(random(-1000, -1750)), 20, 10));
+      thingsArray.push(new GrowParticle(width / 2 + round(random(-300, 300)), round(random(-500, -1750)), 20, 10));
     }
 
     for (let i = -100; i > -1800; i -= 400) {
@@ -280,7 +273,7 @@ function spawnLevelFour() {
 }
 
 function spawnLevelFive() {
-  gameSpeed = 3;
+  gameSpeed = 3.5;
   if (toggle) {
     thingsArray.push(new Obstacle(-20, -760, width / 2 + 160, 20));
     thingsArray.push(new Obstacle(width / 2 + 180, -760, width / 2 - 160, 20));

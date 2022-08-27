@@ -40,7 +40,6 @@ class Player {
     }
 
     if (this.baseD < 0) {
-      colorChange = 0;
       gameOver = true;
     }
   }

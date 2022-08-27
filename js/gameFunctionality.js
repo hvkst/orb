@@ -15,6 +15,19 @@ function gameStatus() {
   }
 }
 
+function drawScore() {
+  push();
+  strokeWeight(1);
+  fill(200, 200, 0, colorChange / 2 + 50);
+  circle(22, 22, 40);
+  textAlign(CENTER);
+  textFont(font);
+  fill(0);
+  textSize(18);
+  text(`${score}`, 22, 19);
+  pop();
+}
+
 function startScreen() {
   push();
   textFont(font);
@@ -81,6 +94,8 @@ function gameOverScreen() {
     fill(white, alphaCount + 255);
     text("Game", width / 2, height / 2 - 25);
     text("Over", width / 2, height / 2 + 15);
+    fill(black);
+    text(`Your Score is ${score}`, width / 2, height / 2 + 150);
 
     if (alphaCount < -800) {
       textSize(75);
@@ -96,6 +111,9 @@ function gameOverScreen() {
       textSize(40);
       fill(black);
       text("Press 'orb' to play again", width / 2, height / 2 + 300);
+      textSize(17);
+      text("Which is not important, because this", width / 2, height / 2 + 190);
+      text("is just a silly game on the internet ♡", width / 2, height / 2 + 212);
     }
   }
   pop();
@@ -109,10 +127,9 @@ function gameOverScreen() {
   if (grow == true) {
     if (gameOverCircleD > 197) {
       gameOverCircleD += growAmount / 4;
-      startScreenCounter++;
     } else {
       gameOverCircleD += growAmount / 2;
-      if (startScreenCounter > 0) alphaCount -= 25;
+      alphaCount -= 25;
     }
   } else {
     if (gameOverCircleD < 183) {
