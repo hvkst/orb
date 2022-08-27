@@ -5,7 +5,6 @@ class Obstacle {
     this.w = w;
     this.h = h;
     this.collided = false;
-    // this.past = false;
     this.r = 40;
     this.g = 80;
     this.b = 80;
