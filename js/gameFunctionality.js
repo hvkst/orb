@@ -192,6 +192,7 @@ function resetSketch(startScreenShow, startInLevel) {
   black = 0;
   score = 0;
   gameStarted = false;
+  startGame = false;
   levelCounter = startInLevel;
   gameSpeed = 0;
   gameOver = false;
