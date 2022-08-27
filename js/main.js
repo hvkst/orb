@@ -14,9 +14,7 @@ function loadBefore() {
 function setup() {
   createCanvas(750, 900);
   loadBefore();
-  slider = createSlider(0, 0.6, 0.3, 0.02);
-  slider.position(50, 50);
-  slider.style("width", "80px");
+  drawVolumeSlider();
   resetSketch(true, 0);
 }
 
@@ -39,6 +37,7 @@ function draw() {
   }
 }
 
+// Spwawns new level
 function spawnNewLevel() {
   if (levelCounter === 0) spawnLevelOne();
   if (levelCounter === 1) spawnLevelTwo();
@@ -49,16 +48,35 @@ function spawnNewLevel() {
   if (levelCounter === 6) spawnLevelSeven();
 }
 
-function updateObstacleAndParticles() {
-  // updateThingsArray();
-  updateRandomParticles();
-  updateThings();
+// Filters and updates the RandomParticleArray
+function updateRandomParticles() {
+  randomParticles = randomParticles.filter((particle) => {
+    particle.update();
+    particle.move();
+    return !particle.collided;
+  });
+
+  if (randomParticles.length < 20) {
+    for (let i = 0; i < 1; i++) {
+      randomParticles.push(new RandomParticle());
+    }
+  }
 }
 
+// Filters and updates the RandomParticleArray
 function updateThings() {
   thingsArray.forEach((thing) => {
     thing.update();
   });
+
+  thingsArray = thingsArray.filter((particle) => {
+    return !particle.collided;
+  });
+}
+
+function updateObstacleAndParticles() {
+  updateRandomParticles();
+  updateThings();
 }
 
 function updatePlayer() {
@@ -85,24 +103,7 @@ function drawBackground() {
   }
 }
 
-function updateRandomParticles() {
-  randomParticles = randomParticles.filter((particle) => {
-    particle.update();
-    particle.move();
-    return !particle.collided;
-  });
-
-  thingsArray = thingsArray.filter((particle) => {
-    return !particle.collided;
-  });
-
-  if (randomParticles.length < 20) {
-    for (let i = 0; i < 1; i++) {
-      randomParticles.push(new RandomParticle());
-    }
-  }
-}
-
+// Level Spawning
 function spawnLevelOne() {
   if (toggle) {
     // box left
@@ -351,6 +352,7 @@ function spawnLevelSeven() {
   }
 }
 
+// Displays different infos about the game in the bottom left corner
 function debugging() {
   fill(0, 200);
   push();

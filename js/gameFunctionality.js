@@ -1,3 +1,4 @@
+// Starts the game and checks for game over
 function gameStatus() {
   if (player.y < height / 2) {
     gameStarted = true;
@@ -19,13 +20,19 @@ function drawScore() {
   push();
   strokeWeight(1);
   fill(200, 200, 0, colorChange / 2 + 50);
-  circle(22, 22, 40);
+  circle(42, 42, 40);
   textAlign(CENTER);
   textFont(font);
   fill(0);
   textSize(18);
-  text(`${score}`, 22, 19);
+  text(`${score}`, 42, 39);
   pop();
+}
+
+function drawVolumeSlider() {
+  slider = createSlider(0, 0.6, 0.3, 0.02);
+  slider.position(50, 40);
+  slider.style("width", "80px");
 }
 
 function startScreen() {
@@ -38,8 +45,9 @@ function startScreen() {
   textAlign(CENTER);
 
   if (startScreenCounter > 10) {
+    // startScreenCounter starts when "orb" appeared
     textSize(75);
-    fill(black, alphaCount * 2);
+    fill(black, alphaCount * 2); // using alphaCount to have a fading in
     text("orb", width / 2, height / 2 + 25);
   }
 
@@ -49,13 +57,14 @@ function startScreen() {
     text("Press 'orb' to play", width / 2, height / 2 + 300);
   }
   pop();
+  // Growing/shrinking cycle
   if (circleD > 200) {
     grow = false;
   }
   if (circleD < 181) {
     grow = true;
   }
-
+  // different tempo at smallest and biggest size
   if (grow == true) {
     if (circleD > 197) {
       circleD += growAmount / 4;
@@ -64,7 +73,7 @@ function startScreen() {
       circleD += growAmount;
     } else {
       circleD += growAmount / 2;
-      if (startScreenCounter > 0) alphaCount += 2;
+      if (startScreenCounter > 0) alphaCount += 2; // "orb" fades in, after some time
     }
   } else {
     if (circleD < 183) {
@@ -91,23 +100,27 @@ function gameOverScreen() {
     textSize(40);
     fill(white);
     textAlign(CENTER);
-    fill(white, alphaCount + 255);
+    fill(white, GameOverAlphaCount);
     text("Game", width / 2, height / 2 - 25);
     text("Over", width / 2, height / 2 + 15);
     fill(black);
     text(`Your Score is ${score}`, width / 2, height / 2 + 150);
 
-    if (alphaCount < -800) {
+    if (GameOverAlphaCount < -600) {
       textSize(75);
       fill(white);
       text("orb", width / 2, height / 2 - 15);
-      if (!toggle) {
+      if (gameOverToggle1) {
         infobop.play();
-        toggle = true;
+        gameOverToggle1 = false;
       }
     }
 
-    if (alphaCount < -1600) {
+    if (GameOverAlphaCount < -1600) {
+      if (gameOverToggle2) {
+        infobop.play();
+        gameOverToggle2 = false;
+      }
       textSize(40);
       fill(black);
       text("Press 'orb' to play again", width / 2, height / 2 + 300);
@@ -129,7 +142,7 @@ function gameOverScreen() {
       gameOverCircleD += growAmount / 4;
     } else {
       gameOverCircleD += growAmount / 2;
-      alphaCount -= 25;
+      GameOverAlphaCount -= 25;
     }
   } else {
     if (gameOverCircleD < 183) {
@@ -139,7 +152,7 @@ function gameOverScreen() {
     }
   }
 }
-
+// Checks for mouse clicks during start and game over screen
 function mousePressed() {
   if (startScreenShow && mouseX > width / 2 - 100 && mouseX < width / 2 + 100 && mouseY > height / 2 - 100 && mouseY < height / 2 + 100) {
     black = 255;
@@ -161,18 +174,20 @@ function mousePressed() {
   }
 }
 
+// used in mousePressed
 function fromStartToGame() {
   startScreenShow = false;
   bgmusic.loop();
 }
 
+// used in mousePressed
 function fromGameOverToGame() {
   bgmusic.loop();
   resetSketch(false, 0);
 }
-
-function resetSketch(startScreenPlay, startInLevel) {
-  // Reset variables
+// Resets the game to starting conditions. Two Arguments: Show start screen and level to start in (for developing)
+function resetSketch(startScreenShow, startInLevel) {
+  // For detailed comments on variables check variables.js
   white = 255;
   black = 0;
   score = 0;
@@ -182,14 +197,16 @@ function resetSketch(startScreenPlay, startInLevel) {
   gameOver = false;
   thingsArray = [];
   toggle = true;
+  gameOverScreenToggle1 = true;
+  gameOverScreenToggle2 = true;
   // Startscreen
   circleD = 0;
   grow = true;
   growAmount = 1;
   startScreenCounter = 0;
   alphaCount = 0;
-
-  startScreenShow = startScreenPlay;
+  GameOverAlphaCount = 255;
+  startScreenShow = startScreenShow;
 
   // GameOverScreen
   gameOverCircleD = 2000;
