@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'MPLUSROUNDED1C';
+  src: url('../fonts/MPLUSROUNDED1C-BOLD.TTF');
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -13,4 +18,33 @@ body {
 .p5Canvas {
   width: auto !important;
   height: 100vh !important;
+}
+
+.home-link-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 5px;
+  padding: 2px 5px 5px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  transition: background-color 0.1s ease-in-out;
+}
+.home-link-wrapper:hover {
+  background-color: #333;
+}
+.home-link-wrapper:active {
+  border: 1px solid transparent;
+}
+
+.home-link-wrapper a {
+  text-decoration: none;
+  font-family: 'MPLUSROUNDED1C';
+  font-size: 10px;
+  color: #aaa;
+  transition: all 0.1s ease-in-out;
+}
+
+.home-link-wrapper a:hover {
+  color: #fff;
 }
