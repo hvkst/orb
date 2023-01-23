@@ -17,7 +17,7 @@ class SpecialParticle {
     fill(this.r, this.g, this.b);
     circle(this.x, this.y, this.d);
 
-    let hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
+    const hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
     if (hit) {
       this.sound.play();
       this.collided = true;
@@ -25,7 +25,7 @@ class SpecialParticle {
       player.d -= this.morphAmmount;
     }
 
-    let distance = dist(this.x, this.y, player.x, player.y);
+    const distance = dist(this.x, this.y, player.x, player.y);
 
     if (this.y > height + 20) this.collided = true;
 
@@ -66,9 +66,9 @@ class GrowParticle extends SpecialParticle {
 
 class RandomParticle {
   constructor() {
-    let randomX = random(20, width - 20);
-    let randomY = random(0, height * 0.7);
-    let randomD = random(8, 22);
+    const randomX = random(20, width - 20);
+    const randomY = random(0, height * 0.7);
+    const randomD = random(8, 22);
     this.collided = false;
     this.x = randomX;
     this.y = randomY;
@@ -80,7 +80,7 @@ class RandomParticle {
     fill(200, 200, 0, colorChange / 2 - 20);
     circle(this.x, this.y, this.d);
 
-    let hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
+    const hit = collideCircleCircle(this.x, this.y, this.d, player.x, player.y, player.d);
     if (hit) {
       bop.play();
       this.collided = true;

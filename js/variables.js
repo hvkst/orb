@@ -37,23 +37,23 @@ let black = 0;
 let gameOverCircleD = 2000; // circle shrinks from here
 
 // InfoTexts
-let levelOneInfoA = "The 🟢 make orb shrink, the 🔴 make it grow.";
-let levelOneInfoB = "Use the arrow keys to move orb arround.";
-let levelOneInfoC = "You do not want to touch these... --> ";
+const levelOneInfoA = 'The 🟢 make orb shrink, the 🔴 make it grow.';
+const levelOneInfoB = 'Use the arrow keys to move orb arround.';
+const levelOneInfoC = 'You do not want to touch these... --> ';
 
-let levelTwoInfo = "OK! Let´s get a bit more serious! You want to hurry up here.";
+const levelTwoInfo = 'OK! const´s get a bit more serious! You want to hurry up here.';
 
-let levelThreeInfoA = "🟢 Get them all! 🔴";
-let levelThreeInfoB = "Don´t get too small!!";
+const levelThreeInfoA = '🟢 Get them all! 🔴';
+const levelThreeInfoB = 'Don´t get too small!!';
 
-let levelSixInfoA = "That´s it, you did it! This was 'orb' 🎉";
-let levelSixInfoB = "I hope you enjoyed the ride. Creating it was a lot of fun 😊";
-let levelSixInfoC = "But I need a break now. Some sleep, maybe Netflix... Have a nice day! Thanks for playing!";
+const levelSixInfoA = "That´s it, you did it! This was 'orb' 🎉";
+const levelSixInfoB = 'I hope you enjoyed the ride. Creating it was a lot of fun 😊';
+const levelSixInfoC = 'But I need a break now. Some sleep, maybe Netflix... Have a nice day! Thanks for playing!';
 
-let levelSixInfoD = "Too bad, Better Call Saul is over...";
-let levelSixInfoE = "But what a final... 🤯";
+const levelSixInfoD = 'Too bad, Better Call Saul is over...';
+const levelSixInfoE = 'But what a final... 🤯';
 
-let levelSixInfoF = "Hey! So you are still here. o-k-a-y...";
-let levelSixInfoG = "You wanna play some more?";
-let levelSixInfoH = "Here, I have a bonus level. Nothing to achieve there, except fo staying alive 😅";
-let levelSixInfoI = "Have fun!";
+const levelSixInfoF = 'Hey! So you are still here. o-k-a-y...';
+const levelSixInfoG = 'You wanna play some more?';
+const levelSixInfoH = 'Here, I have a bonus level. Nothing to achieve there, except fo staying alive 😅';
+const levelSixInfoI = 'Have fun!';

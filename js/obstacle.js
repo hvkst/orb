@@ -12,16 +12,16 @@ class Obstacle {
   }
 
   update() {
-    let hit = collideRectCircle(this.x, this.y, this.w, this.h, player.x, player.y, player.d);
+    const hit = collideRectCircle(this.x, this.y, this.w, this.h, player.x, player.y, player.d);
 
     fill(this.r, this.g, this.b);
     rect(this.x, this.y, this.w, this.h, 3);
     // Working collision detection
     // Split in two parts for debugging and better readability
-    let fromBelow = player.y > this.y + this.h;
-    let fromAbove = player.y < this.y;
-    let fromLeft = player.x < this.x;
-    let fromRight = player.x > this.x + this.w;
+    const fromBelow = player.y > this.y + this.h;
+    const fromAbove = player.y < this.y;
+    const fromLeft = player.x < this.x;
+    const fromRight = player.x > this.x + this.w;
 
     if (hit && fromBelow) player.y += 6;
     if (hit && fromAbove) player.y -= 6;
@@ -53,7 +53,7 @@ class LevelFinish extends Obstacle {
 
   update() {
     super.update();
-    let hit = collideRectCircle(this.x, this.y, this.w, this.h, player.x, player.y, player.d);
+    const hit = collideRectCircle(this.x, this.y, this.w, this.h, player.x, player.y, player.d);
     if (hit && player.baseD == this.trigger && thingsArray.length < this.thingsArrayDotLength) {
       this.collided = true;
       succes.play();
@@ -84,7 +84,7 @@ class MovingObstacle extends Obstacle {
   update() {
     fill(this.r, this.g, this.b);
     rect(this.x, this.y, this.w, this.h);
-    let hit = collideRectCircle(this.x, this.y, this.w, this.h, player.x, player.y, player.d);
+    const hit = collideRectCircle(this.x, this.y, this.w, this.h, player.x, player.y, player.d);
     if (hit) gameOver = true;
 
     if (this.x > this.baseX + this.moveX) {
@@ -130,7 +130,7 @@ class TextInfo {
     strokeWeight(1);
     noStroke();
     drawingContext.shadowBlur = 10;
-    drawingContext.shadowColor = "yellow";
+    drawingContext.shadowColor = 'yellow';
     fill(0);
     rect(this.x, this.y, this.w, this.h, 10);
     pop();
@@ -143,7 +143,7 @@ class TextInfo {
     if (gameStarted) this.y += gameSpeed * 0.2;
     if (this.y > height) this.collided = true;
 
-    let hit = collideRectCircle(this.x, this.y, this.w, this.h, player.x, player.y, player.d);
+    const hit = collideRectCircle(this.x, this.y, this.w, this.h, player.x, player.y, player.d);
     if (hit) {
       infobop.play();
       this.collided = true;
